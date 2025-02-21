@@ -1,0 +1,177 @@
+package main
+
+/*
+ * An example of how to use lxd's golang /dev/lxd client. This is intended to
+ * be run from inside a container.
+ */
+
+import (
+	"bufio"
+	"context"
+	"encoding/json"
+	"fmt"
+	"io"
+	"net"
+	"net/http"
+	"os"
+	"time"
+
+	"github.com/gorilla/websocket"
+	"gopkg.in/yaml.v2"
+)
+
+type devLxdDialer struct {
+	Path string
+}
+
+func (d devLxdDialer) devLxdDial(ctx context.Context, network, path string) (net.Conn, error) {
+	addr, err := net.ResolveUnixAddr("unix", d.Path)
+	if err != nil {
+		return nil, err
+	}
+
+	conn, err := net.DialUnix("unix", nil, addr)
+	if err != nil {
+		return nil, err
+	}
+
+	return conn, err
+}
+
+var devLxdTransport = &http.Transport{
+	DialContext: devLxdDialer{"/dev/lxd/sock"}.devLxdDial,
+}
+
+func devlxdMonitorStream() {
+	client := http.Client{
+		Transport: &http.Transport{
+			DialContext: func(_ context.Context, _, _ string) (net.Conn, error) {
+				return net.Dial("unix", "/dev/lxd/sock")
+			},
+		},
+	}
+
+	resp, err := client.Get("http://unix/1.0/events")
+	if err != nil {
+		panic(err)
+	}
+
+	scanner := bufio.NewScanner(resp.Body)
+
+	for scanner.Scan() {
+		message := make(map[string]any)
+		err = json.Unmarshal(scanner.Bytes(), &message)
+		if err != nil {
+			return
+		}
+
+		message["timestamp"] = nil
+
+		msg, err := yaml.Marshal(&message)
+		if err != nil {
+			return
+		}
+
+		fmt.Printf("%s\n", msg)
+	}
+}
+
+func devlxdMonitorWebsocket(c http.Client) {
+	dialer := websocket.Dialer{
+		NetDialContext:   devLxdTransport.DialContext,
+		HandshakeTimeout: time.Second * 5,
+	}
+
+	conn, _, err := dialer.Dial("ws://unix.socket/1.0/events", nil)
+	if err != nil {
+		return
+	}
+
+	for {
+		_, data, err := conn.ReadMessage()
+		if err != nil {
+			return
+		}
+
+		message := make(map[string]any)
+		err = json.Unmarshal(data, &message)
+		if err != nil {
+			return
+		}
+
+		message["timestamp"] = nil
+
+		msg, err := yaml.Marshal(&message)
+		if err != nil {
+			return
+		}
+
+		fmt.Printf("%s\n", msg)
+	}
+}
+
+func main() {
+	c := http.Client{Transport: devLxdTransport}
+	raw, err := c.Get("http://meshuggah-rocks/")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	if raw.StatusCode != http.StatusOK {
+		fmt.Println("http error", raw.StatusCode)
+		result, err := io.ReadAll(raw.Body)
+		if err != nil {
+			os.Exit(1)
+		}
+
+		fmt.Println(string(result))
+	}
+
+	result := []string{}
+	err = json.NewDecoder(raw.Body).Decode(&result)
+	if err != nil {
+		fmt.Println("err decoding response", err)
+		os.Exit(1)
+	}
+
+	if result[0] != "/1.0" {
+		fmt.Println("unknown response", result)
+		os.Exit(1)
+	}
+
+	if len(os.Args) > 1 {
+		if os.Args[1] == "monitor-websocket" {
+			devlxdMonitorWebsocket(c)
+			os.Exit(0)
+		}
+
+		if os.Args[1] == "monitor-stream" {
+			devlxdMonitorStream()
+			os.Exit(0)
+		}
+
+		var path string
+		if os.Args[1] == "devices" {
+			path = "devices"
+		} else {
+			path = fmt.Sprintf("config/%s", os.Args[1])
+		}
+
+		raw, err := c.Get(fmt.Sprintf("http://meshuggah-rocks/1.0/%s", path))
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
+		value, err := io.ReadAll(raw.Body)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
+		fmt.Println(string(value))
+	} else {
+		fmt.Println("/dev/lxd ok")
+	}
+}

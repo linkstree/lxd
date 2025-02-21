@@ -1,0 +1,934 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<meta property="og:title" content="Metrics" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://linuxcontainers.org/lxd/docs/stable-5.0/metrics/" />
+<meta property="og:site_name" content="LXD documentation" />
+<meta property="og:description" content="LXD collects metrics for all running instances. These metrics cover the CPU, memory, network, disk and process usage. They are meant to be consumed by Prometheus, and you can use Grafana to display..." />
+<meta property="og:image" content="https://linuxcontainers.org/static/img/containers.png" />
+<meta property="og:image:alt" content="LXD documentation" />
+<meta name="description" content="LXD collects metrics for all running instances. These metrics cover the CPU, memory, network, disk and process usage. They are meant to be consumed by Prometheus, and you can use Grafana to display..." />
+<link rel="index" title="Index" href="../genindex/" /><link rel="search" title="Search" href="../search/" /><link rel="next" title="Internals &amp; debugging" href="../internals/" /><link rel="prev" title="Events" href="../events/" />
+
+    <link rel="shortcut icon" href="../_static/favicon.ico"/><!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
+        <title>Metrics - LXD documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="../_static/youtube.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/related-links.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  --font-stack: Ubuntu, -apple-system, Segoe UI, Roboto, Oxygen, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  --font-stack--monospace: Ubuntu Mono, Consolas, Monaco, Courier, monospace;
+  --color-foreground-primary: #111;
+  --color-foreground-secondary: var(--color-foreground-primary);
+  --color-foreground-muted: #333;
+  --color-background-secondary: #FFF;
+  --color-background-hover: #f2f2f2;
+  --color-brand-primary: #111;
+  --color-brand-content: #06C;
+  --color-api-background: #cdcdcd;
+  --color-inline-code-background: rgba(0,0,0,.03);
+  --color-sidebar-link-text: #111;
+  --color-sidebar-item-background--current: #ebebeb;
+  --color-sidebar-item-background--hover: #f2f2f2;
+  --toc-font-size: var(--font-size--small);
+  --color-admonition-title-background--note: var(--color-background-primary);
+  --color-admonition-title-background--tip: var(--color-background-primary);
+  --color-admonition-title-background--important: var(--color-background-primary);
+  --color-admonition-title-background--caution: var(--color-background-primary);
+  --color-admonition-title--note: #24598F;
+  --color-admonition-title--tip: #24598F;
+  --color-admonition-title--important: #C7162B;
+  --color-admonition-title--caution: #F99B11;
+  --color-highlighted-background: #EbEbEb;
+  --color-link-underline: var(--color-background-primary);
+  --color-link-underline--hover: var(--color-background-primary);
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-foreground-secondary: var(--color-foreground-primary);
+  --color-foreground-muted: #CDCDCD;
+  --color-background-secondary: var(--color-background-primary);
+  --color-background-hover: #666;
+  --color-brand-primary: #fff;
+  --color-brand-content: #06C;
+  --color-sidebar-link-text: #f7f7f7;
+  --color-sidebar-item-background--current: #666;
+  --color-sidebar-item-background--hover: #333;
+  --color-admonition-background: transparent;
+  --color-admonition-title-background--note: var(--color-background-primary);
+  --color-admonition-title-background--tip: var(--color-background-primary);
+  --color-admonition-title-background--important: var(--color-background-primary);
+  --color-admonition-title-background--caution: var(--color-background-primary);
+  --color-admonition-title--note: #24598F;
+  --color-admonition-title--tip: #24598F;
+  --color-admonition-title--important: #C7162B;
+  --color-admonition-title--caution: #F99B11;
+  --color-highlighted-background: #666;
+  --color-link-underline: var(--color-background-primary);
+  --color-link-underline--hover: var(--color-background-primary);
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-foreground-secondary: var(--color-foreground-primary);
+  --color-foreground-muted: #CDCDCD;
+  --color-background-secondary: var(--color-background-primary);
+  --color-background-hover: #666;
+  --color-brand-primary: #fff;
+  --color-brand-content: #06C;
+  --color-sidebar-link-text: #f7f7f7;
+  --color-sidebar-item-background--current: #666;
+  --color-sidebar-item-background--hover: #333;
+  --color-admonition-background: transparent;
+  --color-admonition-title-background--note: var(--color-background-primary);
+  --color-admonition-title-background--tip: var(--color-background-primary);
+  --color-admonition-title-background--important: var(--color-background-primary);
+  --color-admonition-title-background--caution: var(--color-background-primary);
+  --color-admonition-title--note: #24598F;
+  --color-admonition-title--tip: #24598F;
+  --color-admonition-title--important: #C7162B;
+  --color-admonition-title--caution: #F99B11;
+  --color-highlighted-background: #666;
+  --color-link-underline: var(--color-background-primary);
+  --color-link-underline--hover: var(--color-background-primary);
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    <header id="header" class="p-navigation">
+
+  <style>
+    .p-navigation {
+      border-bottom: 1px solid var(--color-sidebar-background-border);
+    }
+
+    .p-navigation__nav {
+      display: flex;
+    }
+
+    ul.p-navigation__links {
+      display: flex;
+      list-style: none;
+      margin-left: 0;
+      margin-top: auto;
+      margin-bottom: auto;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    ul.p-navigation__links li {
+      margin: 0 auto;
+      text-align: center;
+      width: 100%;
+    }
+
+    ul.p-navigation__links li a {
+      background-color: rgba(0, 0, 0, 0);
+      border: none;
+      border-radius: 0;
+      color: var(--color-sidebar-link-text);
+      display: block;
+      font-weight: 400;
+      line-height: 1.5rem;
+      margin: 0;
+      overflow: hidden;
+      padding: 1rem 0;
+      position: relative;
+      text-align: left;
+      text-overflow: ellipsis;
+      transition-duration: .1s;
+      transition-property: background-color, color, opacity;
+      transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+      white-space: nowrap;
+      width: 100%;
+    }
+
+    ul.p-navigation__links .p-navigation__link,
+    ul.p-navigation__links .p-navigation__logo {
+      text-align: center;
+    }
+
+    ul.p-navigation__links .p-navigation__link:hover,
+    ul.p-navigation__links .p-dropdown__link:hover {
+      background-color: var(--color-sidebar-item-background--hover);
+    }
+
+    ul.p-navigation__links .p-navigation__sub-link {
+      background: var(--color-background-primary);
+      padding: .5rem 0 .5rem .5rem;
+      font-weight: 300;
+    }
+
+    ul.p-navigation__links .more-links-dropdown li a {
+      border-left: 1px solid var(--color-sidebar-background-border);
+      border-right: 1px solid var(--color-sidebar-background-border);
+    }
+
+    ul.p-navigation__links .more-links-dropdown li:first-child a {
+      border-top: 1px solid var(--color-sidebar-background-border);
+    }
+
+    ul.p-navigation__links .more-links-dropdown li:last-child a {
+      border-bottom: 1px solid var(--color-sidebar-background-border);
+    }
+
+    ul.p-navigation__links .p-navigation__logo {
+      padding: 0.5rem;
+    }
+
+    ul.p-navigation__links .p-navigation__logo img {
+      width: 40px;
+    }
+
+    ul.more-links-dropdown {
+      display: none;
+      overflow-x: visible;
+      height: 0;
+      z-index: 55;
+      padding: 0;
+      position: relative;
+      list-style: none;
+      margin-bottom: 0;
+      margin-top: 0;
+    }
+
+    ul.p-navigation__links li:first-child {
+      width: 130px;
+    }
+
+    @media only screen and (min-width: 800px) {
+      .nav-more-links::after {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath fill='%23111' d='M8.187 11.748l6.187-6.187-1.06-1.061-5.127 5.127L3.061 4.5 2 5.561z'/%3E%3C/svg%3E");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        content: "";
+        display: block;
+        height: 1rem;
+        pointer-events: none;
+        position: absolute;
+        right: 1rem;
+        text-indent: calc(100% + 10rem);
+        top: calc(1rem + 0.25rem);
+        width: 1rem;
+      }
+
+      body[data-theme=dark] .nav-more-links::after {
+        background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><path stroke='white' fill='white' d='M8.187 11.748l6.187-6.187-1.06-1.061-5.127 5.127L3.061 4.5 2 5.561z'/></svg>");
+      }
+
+      ul.p-navigation__links li:first-child {
+        width: 100%;
+      }
+    }
+
+    @media only screen and (min-width: 1310px) {
+      ul.p-navigation__links {
+        margin-left: calc(50% - 41em);
+      }
+    }
+
+  </style>
+
+  <div class="p-navigation__nav" role="menubar">
+
+    <ul class="p-navigation__links" role="menu">
+
+      <li>
+        <a class="p-navigation__logo" href="/">
+          <img src="../_static/download/containers.small.png" alt="Linux containers logo" border="0" />
+        </a>
+      </li>
+
+      <li>
+        <a href="/" class="p-navigation__link">Home</a>
+      </li>
+
+      <li>
+        <a href="/lxd/try-it/" class="p-navigation__link">Demo</a>
+      </li>
+
+
+      <li>
+        <a href="#" class="p-navigation__link nav-more-links">More resources</a>
+        <ul class="more-links-dropdown">
+          <li>
+            <a href="/lxd/introduction/" class="p-navigation__sub-link p-dropdown__link">Introduction</a>
+          </li>
+
+          <li>
+            <a href="/lxd/news/" class="p-navigation__sub-link p-dropdown__link">News</a>
+          </li>
+
+          <li>
+            <a href="/lxd/getting-started-cli/" class="p-navigation__sub-link is-selected p-dropdown__link">Getting started</a>
+          </li>
+
+          <li>
+            <a href="/lxd/third-party-integrations/" class="p-navigation__sub-link p-dropdown__link">Third-party integrations</a>
+          </li>
+
+          <li>
+            <a href="/lxd/advanced-guide/" class="p-navigation__sub-link p-dropdown__link">Advanced guide</a>
+          </li>
+
+          <li>
+            <a href="https://discuss.linuxcontainers.org" class="p-navigation__sub-link p-dropdown__link">Forum</a>
+          </li>
+
+          <li>
+            <a href="https://github.com/lxc/lxd" class="p-navigation__sub-link p-dropdown__link">GitHub</a>
+          </li>
+
+        </ul>
+      </li>
+
+    </ul>
+  </div>
+</header>
+   
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../"><div class="brand">LXD  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="version_dropdown">
+  Doc version: <button onclick="dropdown()" class="version_select" id="current"></button>
+  <div id="all-versions" class="available_versions"></div>
+</div><form class="sidebar-search-container" method="get" action="../search/" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../">LXD</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../getting_started/">Getting started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../requirements/">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installing/">Install LXD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/initialize/">Initialize LXD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/">Frequently asked</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/">Contributing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../support/">Support</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../security/">Security</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/security/">About security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../authentication/">Remote API authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/server_expose/">Expose LXD to the network</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../instances/">Instances</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/instances/">About instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/instances_create/">Create instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/instances_manage/">Manage instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/instances_configure/">Configure instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/instances_snapshots/">Create snapshots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../profiles/">Use profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../instance-exec/">Run commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/instances_console/">Access the console</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/instances_access_files/">Access files</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../explanation/instance_config/">Instance configuration</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../reference/instance_properties/">Instance properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/instance_options/">Instance options</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../reference/devices/">Devices</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../reference/standard_devices/">Standard devices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_none/">Type: <code class="docutils literal notranslate"><span class="pre">none</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_nic/">Type: <code class="docutils literal notranslate"><span class="pre">nic</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_disk/">Type: <code class="docutils literal notranslate"><span class="pre">disk</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_unix_char/">Type: <code class="docutils literal notranslate"><span class="pre">unix-char</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_unix_block/">Type: <code class="docutils literal notranslate"><span class="pre">unix-block</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_usb/">Type: <code class="docutils literal notranslate"><span class="pre">usb</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_gpu/">Type: <code class="docutils literal notranslate"><span class="pre">gpu</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_infiniband/">Type: <code class="docutils literal notranslate"><span class="pre">infiniband</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_proxy/">Type: <code class="docutils literal notranslate"><span class="pre">proxy</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_unix_hotplug/">Type: <code class="docutils literal notranslate"><span class="pre">unix-hotplug</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_tpm/">Type: <code class="docutils literal notranslate"><span class="pre">tpm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_pci/">Type: <code class="docutils literal notranslate"><span class="pre">pci</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/instance_units/">Units for storage and network limits</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../images/">Images</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../architectures/">Architectures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cloud-init/">Cloud-init</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../image-handling/">Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../storage/">Storage</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/storage/">About storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/storage_pools/">Manage pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/storage_create_instance/">Create an instance in a pool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/storage_volumes/">Manage volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/storage_move_volume/">Move or copy a volume</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/storage_backup_volume/">Back up a volume</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../reference/storage_drivers/">Storage drivers</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../reference/storage_dir/">Directory - <code class="docutils literal notranslate"><span class="pre">dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/storage_btrfs/">Btrfs - <code class="docutils literal notranslate"><span class="pre">btrfs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/storage_lvm/">LVM - <code class="docutils literal notranslate"><span class="pre">lvm</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/storage_zfs/">ZFS - <code class="docutils literal notranslate"><span class="pre">zfs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/storage_ceph/">Ceph RBD - <code class="docutils literal notranslate"><span class="pre">ceph</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/storage_cephfs/">CephFS - <code class="docutils literal notranslate"><span class="pre">cephfs</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../networks/">Networking</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/networks/">About networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/network_create/">Create and configure a network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/network_acls/">Configure network ACLs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/network_forwards/">Configure network forwards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/network_zones/">Configure network zones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/network_bgp/">Configure LXD as BGP server</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../reference/network_bridge/">Bridge network</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howto/network_bridge_resolved/">Integrate with resolved</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/network_bridge_firewalld/">Configure your firewall</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../reference/network_ovn/">OVN network</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howto/network_ovn_setup/">Set up OVN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/network_ovn_peers/">Create routing relationships</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../reference/network_external/">External networks</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../reference/network_macvlan/">Macvlan network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/network_sriov/">SR-IOV network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/network_physical/">Physical network</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../clustering/">Clustering</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/clustering/">About clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/cluster_form/">Form a cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/cluster_manage/">Manage a cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/cluster_recover/">Recover a cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/cluster_manage_instance/">Manage instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/cluster_config_storage/">Configure storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/cluster_config_networks/">Configure networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/cluster_groups/">Set up cluster groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/cluster_member_config/">Cluster member configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../operation/">Manage LXD</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../server/">Server configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/">Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../remotes/">Remotes</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../explanation/performance_tuning/">Performance tuning</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howto/benchmark_performance/">Benchmark performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/network_increase_bandwidth/">Increase bandwidth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/server_settings/">Server settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../backup/">Backups</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../migration/">Migration</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howto/move_instances/">Move instances</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/import_machines_to_instances/">Import existing machines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/migrate_from_lxc/">Migrate from LXC</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../restapi_landing/">REST API</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../rest-api/">Main API documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/">Main API specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api-extensions/">Main API extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev-lxd/">Instance API documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../events/">Events API documentation</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Metrics API documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../internals/">Internals &amp; debugging</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../container-environment/">Container environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../daemon-behavior/">Daemon behavior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database/">Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/">Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../environment/">Environment variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../syscall-interception/">System call interception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userns-idmap/">User namespace setup</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../external_resources/">External resources</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://github.com/lxc/lxd">Project repository</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://images.linuxcontainers.org">Image server</a></li>
+</ul>
+</li>
+</ul>
+
+</div></div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="metrics">
+<span id="id1"></span><h1>Metrics<a class="headerlink" href="#metrics" title="Permalink to this heading">#</a></h1>
+         <p class="youtube_link">           <a href="https://www.youtube.com/watch?v=EthK-8hm_fY" target="_blank">             <span title="LXD metrics with Prometheus and Grafana - YouTube" class="play_icon">▶</span>             <span title="LXD metrics with Prometheus and Grafana - YouTube">Watch on YouTube</span>           </a>         </p><!-- Include start metrics intro -->
+<p>LXD collects metrics for all running instances.
+These metrics cover the CPU, memory, network, disk and process usage.
+They are meant to be consumed by Prometheus, and you can use Grafana to display the metrics as graphs.</p>
+<!-- Include end metrics intro -->
+<p>In cluster environments, LXD will only return the values for instances running on the server being accessed. It’s expected that each cluster member will be scraped separately.</p>
+<p>The instance metrics are updated when calling the <code class="docutils literal notranslate"><span class="pre">/1.0/metrics</span></code> endpoint.
+They are cached for 8s to handle multiple scrapers. Fetching metrics is a relatively expensive operation for LXD to perform so consider scraping at a higher than default interval
+if the impact is too high.</p>
+<section id="create-metrics-certificate">
+<h2>Create metrics certificate<a class="headerlink" href="#create-metrics-certificate" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">/1.0/metrics</span></code> endpoint is a special one as it also accepts a <code class="docutils literal notranslate"><span class="pre">metrics</span></code> type certificate.
+This kind of certificate is meant for metrics only, and won’t work for interaction with instances or any other LXD objects.</p>
+<p>Here’s how to create a new certificate (this is not specific to metrics):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>openssl<span class="w"> </span>req<span class="w"> </span>-x509<span class="w"> </span>-newkey<span class="w"> </span>ec<span class="w"> </span>-pkeyopt<span class="w"> </span>ec_paramgen_curve:secp384r1<span class="w"> </span>-sha384<span class="w"> </span>-keyout<span class="w"> </span>metrics.key<span class="w"> </span>-nodes<span class="w"> </span>-out<span class="w"> </span>metrics.crt<span class="w"> </span>-days<span class="w"> </span><span class="m">3650</span><span class="w"> </span>-subj<span class="w"> </span><span class="s2">&quot;/CN=metrics.local&quot;</span>
+</pre></div>
+</div>
+<p><em>Note</em>: OpenSSL version 1.1.0+ is required for the above command to generate a proper certificate.</p>
+<p>Now, this certificate needs to be added to the list of trusted clients:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lxc<span class="w"> </span>config<span class="w"> </span>trust<span class="w"> </span>add<span class="w"> </span>metrics.crt<span class="w"> </span>--type<span class="o">=</span>metrics
+</pre></div>
+</div>
+</section>
+<section id="add-target-to-prometheus">
+<h2>Add target to Prometheus<a class="headerlink" href="#add-target-to-prometheus" title="Permalink to this heading">#</a></h2>
+<p>In order for Prometheus to scrape from LXD, it has to be added to the targets.</p>
+<p>First, one needs to ensure that <code class="docutils literal notranslate"><span class="pre">core.https_address</span></code> is set so LXD can be reached over the network.
+This can be done by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lxc<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>core.https_address<span class="w"> </span><span class="s2">&quot;:8443&quot;</span>
+</pre></div>
+</div>
+<p>Alternatively, one can use <code class="docutils literal notranslate"><span class="pre">core.metrics_address</span></code> which is intended for metrics only.</p>
+<p>Second, the newly created certificate and key, as well as the LXD server certificate need to be accessible to Prometheus.
+For this, these three files can be copied to <code class="docutils literal notranslate"><span class="pre">/etc/prometheus/tls</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create new tls directory</span>
+mkdir<span class="w"> </span>/etc/prometheus/tls
+
+<span class="c1"># Copy newly created certificate and key to tls directory</span>
+cp<span class="w"> </span>metrics.crt<span class="w"> </span>metrics.key<span class="w"> </span>/etc/prometheus/tls
+
+<span class="c1"># Copy LXD server certificate to tls directory</span>
+cp<span class="w"> </span>/var/snap/lxd/common/lxd/server.crt<span class="w"> </span>/etc/prometheus/tls
+
+<span class="c1"># Make sure Prometheus can read these files (usually, Prometheus is run as user &quot;prometheus&quot;)</span>
+chown<span class="w"> </span>-R<span class="w"> </span>prometheus:prometheus<span class="w"> </span>/etc/prometheus/tls
+</pre></div>
+</div>
+<p>Lastly, LXD has to be added as target.
+For this, <code class="docutils literal notranslate"><span class="pre">/etc/prometheus/prometheus.yaml</span></code> needs to be edited.
+Here’s what the configuration needs to look like:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">scrape_configs</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lxd</span>
+<span class="w">    </span><span class="nt">metrics_path</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;/1.0/metrics&#39;</span>
+<span class="w">    </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;https&#39;</span>
+<span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;foo.example.com:8443&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">tls_config</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">ca_file</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;tls/server.crt&#39;</span>
+<span class="w">      </span><span class="nt">cert_file</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;tls/metrics.crt&#39;</span>
+<span class="w">      </span><span class="nt">key_file</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;tls/metrics.key&#39;</span>
+<span class="w">      </span><span class="c1"># XXX: server_name is required if the target name</span>
+<span class="w">      </span><span class="c1">#      is not covered by the certificate (not in the SAN list)</span>
+<span class="w">      </span><span class="nt">server_name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;foo&#39;</span>
+</pre></div>
+</div>
+<p>In the above example, <code class="docutils literal notranslate"><span class="pre">/etc/prometheus/tls/server.crt</span></code> looks like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ openssl x509 -noout -text -in /etc/prometheus/tls/server.crt
+...
+            X509v3 Subject Alternative Name:
+                DNS:foo, IP Address:127.0.0.1, IP Address:0:0:0:0:0:0:0:1
+...
+</pre></div>
+</div>
+<p>Since the Subject Alternative Name (SAN) list doesn’t include the host name provided in the <code class="docutils literal notranslate"><span class="pre">targets</span></code> list, it is required to override the name used for comparison using the <code class="docutils literal notranslate"><span class="pre">server_name</span></code> directive.</p>
+<p>Here is an example of a <code class="docutils literal notranslate"><span class="pre">prometheus.yaml</span></code> configuration where multiple jobs are used to scrape the metrics of multiple LXD servers:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">scrape_configs</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># abydos, langara and orilla are part of a single cluster</span>
+<span class="w">  </span><span class="c1"># initially bootstrapped by abydos which is why all 3 nodes</span>
+<span class="w">  </span><span class="c1"># share the its `ca_file` and `server_name`.</span>
+<span class="w">  </span><span class="c1">#</span>
+<span class="w">  </span><span class="c1"># Note: 2 params are provided:</span>
+<span class="w">  </span><span class="c1">#   `project`: needed when not using the `default` project or</span>
+<span class="w">  </span><span class="c1">#              when multiple are used.</span>
+<span class="w">  </span><span class="c1">#   `target`: the individual cluster member to scrape because</span>
+<span class="w">  </span><span class="c1">#             they only report about instances running locally.</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;lxd-abydos&quot;</span>
+<span class="w">    </span><span class="nt">metrics_path</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;/1.0/metrics&#39;</span>
+<span class="w">    </span><span class="nt">params</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">project</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;jdoe&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;abydos&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;https&#39;</span>
+<span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;abydos.hosts.example.net:8444&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">tls_config</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">ca_file</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;tls/abydos.crt&#39;</span>
+<span class="w">      </span><span class="nt">cert_file</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;tls/metrics.crt&#39;</span>
+<span class="w">      </span><span class="nt">key_file</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;tls/metrics.key&#39;</span>
+<span class="w">      </span><span class="nt">server_name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;abydos&#39;</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;lxd-langara&quot;</span>
+<span class="w">    </span><span class="nt">metrics_path</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;/1.0/metrics&#39;</span>
+<span class="w">    </span><span class="nt">params</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">project</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;jdoe&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;langara&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;https&#39;</span>
+<span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;langara.hosts.example.net:8444&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">tls_config</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">ca_file</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;tls/abydos.crt&#39;</span>
+<span class="w">      </span><span class="nt">cert_file</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;tls/metrics.crt&#39;</span>
+<span class="w">      </span><span class="nt">key_file</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;tls/metrics.key&#39;</span>
+<span class="w">      </span><span class="nt">server_name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;abydos&#39;</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;lxd-orilla&quot;</span>
+<span class="w">    </span><span class="nt">metrics_path</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;/1.0/metrics&#39;</span>
+<span class="w">    </span><span class="nt">params</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">project</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;jdoe&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;orilla&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;https&#39;</span>
+<span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;orilla.hosts.example.net:8444&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">tls_config</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">ca_file</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;tls/abydos.crt&#39;</span>
+<span class="w">      </span><span class="nt">cert_file</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;tls/metrics.crt&#39;</span>
+<span class="w">      </span><span class="nt">key_file</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;tls/metrics.key&#39;</span>
+<span class="w">      </span><span class="nt">server_name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;abydos&#39;</span>
+
+<span class="w">  </span><span class="c1"># jupiter, mars and saturn are 3 standalone LXD servers.</span>
+<span class="w">  </span><span class="c1"># Note: only the `default` project is used on them, so it is not specified.</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;lxd-jupiter&quot;</span>
+<span class="w">    </span><span class="nt">metrics_path</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;/1.0/metrics&#39;</span>
+<span class="w">    </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;https&#39;</span>
+<span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;jupiter.example.com:9101&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">tls_config</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">ca_file</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;tls/jupiter.crt&#39;</span>
+<span class="w">      </span><span class="nt">cert_file</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;tls/metrics.crt&#39;</span>
+<span class="w">      </span><span class="nt">key_file</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;tls/metrics.key&#39;</span>
+<span class="w">      </span><span class="nt">server_name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;jupiter&#39;</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;lxd-mars&quot;</span>
+<span class="w">    </span><span class="nt">metrics_path</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;/1.0/metrics&#39;</span>
+<span class="w">    </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;https&#39;</span>
+<span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;mars.example.com:9101&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">tls_config</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">ca_file</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;tls/mars.crt&#39;</span>
+<span class="w">      </span><span class="nt">cert_file</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;tls/metrics.crt&#39;</span>
+<span class="w">      </span><span class="nt">key_file</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;tls/metrics.key&#39;</span>
+<span class="w">      </span><span class="nt">server_name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;mars&#39;</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;lxd-saturn&quot;</span>
+<span class="w">    </span><span class="nt">metrics_path</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;/1.0/metrics&#39;</span>
+<span class="w">    </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;https&#39;</span>
+<span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;saturn.example.com:9101&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">tls_config</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">ca_file</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;tls/saturn.crt&#39;</span>
+<span class="w">      </span><span class="nt">cert_file</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;tls/metrics.crt&#39;</span>
+<span class="w">      </span><span class="nt">key_file</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;tls/metrics.key&#39;</span>
+<span class="w">      </span><span class="nt">server_name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;saturn&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="provided-instance-metrics">
+<h2>Provided instance metrics<a class="headerlink" href="#provided-instance-metrics" title="Permalink to this heading">#</a></h2>
+<p>The following instance metrics are provided:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_cpu_seconds_total{cpu=&quot;&lt;cpu&gt;&quot;,</span> <span class="pre">mode=&quot;&lt;mode&gt;&quot;}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_disk_read_bytes_total{device=&quot;&lt;dev&gt;&quot;}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_disk_reads_completed_total{device=&quot;&lt;dev&gt;&quot;}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_disk_written_bytes_total{device=&quot;&lt;dev&gt;&quot;}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_disk_writes_completed_total{device=&quot;&lt;dev&gt;&quot;}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_filesystem_avail_bytes{device=&quot;&lt;dev&gt;&quot;,fstype=&quot;&lt;type&gt;&quot;}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_filesystem_free_bytes{device=&quot;&lt;dev&gt;&quot;,fstype=&quot;&lt;type&gt;&quot;}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_filesystem_size_bytes{device=&quot;&lt;dev&gt;&quot;,fstype=&quot;&lt;type&gt;&quot;}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_memory_Active_anon_bytes</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_memory_Active_bytes</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_memory_Active_file_bytes</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_memory_Cached_bytes</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_memory_Dirty_bytes</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_memory_HugepagesFree_bytes</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_memory_HugepagesTotal_bytes</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_memory_Inactive_anon_bytes</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_memory_Inactive_bytes</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_memory_Inactive_file_bytes</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_memory_Mapped_bytes</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_memory_MemAvailable_bytes</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_memory_MemFree_bytes</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_memory_MemTotal_bytes</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_memory_OOM_kills_total</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_memory_RSS_bytes</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_memory_Shmem_bytes</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_memory_Swap_bytes</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_memory_Unevictable_bytes</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_memory_Writeback_bytes</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_network_receive_bytes_total{device=&quot;&lt;dev&gt;&quot;}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_network_receive_drop_total{device=&quot;&lt;dev&gt;&quot;}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_network_receive_errs_total{device=&quot;&lt;dev&gt;&quot;}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_network_receive_packets_total{device=&quot;&lt;dev&gt;&quot;}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_network_transmit_bytes_total{device=&quot;&lt;dev&gt;&quot;}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_network_transmit_drop_total{device=&quot;&lt;dev&gt;&quot;}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_network_transmit_errs_total{device=&quot;&lt;dev&gt;&quot;}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_network_transmit_packets_total{device=&quot;&lt;dev&gt;&quot;}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lxd_procs_total</span></code></p></li>
+</ul>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+   
+
+<div class="related-pages">
+  <a class="next-page" href="../internals/">
+      <div class="page-info">
+        <div class="context">
+          <span>Next</span>
+        </div>
+        <div class="title">Internals &amp; debugging</div>
+      </div>
+      <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+    </a>
+  <a class="prev-page" href="../events/">
+      <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+      <div class="page-info">
+        <div class="context">
+          <span>Previous</span>
+        </div>
+        
+        <div class="title">Events</div>
+        
+      </div>
+    </a>
+</div>
+<div class="bottom-of-page">
+  <div class="left-details">
+    <div class="copyright">
+        Copyright &#169; 2014-2023 LXD contributors
+    </div>
+
+    <div class="last-updated">
+      Last updated on Jan 16, 2023</div>
+  </div>
+  <div class="right-details">
+
+    
+    <div class="show-source">
+      <a class="muted-link" href="../_sources/metrics.md.txt"
+         rel="nofollow">Show source</a>
+    </div>
+    
+    <div class="edit-github">
+      <a class="muted-link" href="https://github.com/lxc/lxd/edit/master/doc/metrics.md">Edit on GitHub</a>
+    </div>
+    
+
+    </div>
+  </div>
+</div>
+
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+<div class="toc-sticky toc-scroll">
+   
+    <div class="toc-title-container">
+      <span class="toc-title">
+       Contents
+      </span>
+    </div>
+    <div class="toc-tree-container">
+      <div class="toc-tree">
+        <ul>
+<li><a class="reference internal" href="#">Metrics</a><ul>
+<li><a class="reference internal" href="#create-metrics-certificate">Create metrics certificate</a></li>
+<li><a class="reference internal" href="#add-target-to-prometheus">Add target to Prometheus</a></li>
+<li><a class="reference internal" href="#provided-instance-metrics">Provided instance metrics</a></li>
+</ul>
+</li>
+</ul>
+
+      </div>
+    </div>
+   
+    
+    <div class="relatedlinks-title-container">
+      <span class="relatedlinks-title">
+       Related links
+      </span>
+    </div>
+    <div class="relatedlinks-container">
+      <div class="relatedlinks">
+        
+          <ul><li><a href="https://discuss.linuxcontainers.org/t/12281" target="_blank">Retrieve LXD metrics with Telegraf and InfluxDB 2.x</a></li><li><a href="https://discuss.linuxcontainers.org/t/11735" target="_blank">[LXD] Metric exporter for instances</a></li></ul>
+        
+        
+          <ul><li><a href="https://grafana.com/grafana/dashboards/15726" target="_blank">LXD | Grafana Labs</a></li></ul>
+        
+      </div>
+    </div>
+    
+  </div>
+
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    <script src="../_static/header-nav.js"></script>
+    <script src="../_static/version-switcher.js"></script>
+    </body>
+</html>

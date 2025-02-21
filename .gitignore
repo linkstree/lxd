@@ -1,0 +1,54 @@
+# Go编译产物
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go工作目录
+/bin/
+/pkg/
+/out/
+
+# Go依赖相关
+/vendor/
+/go.sum
+
+# IDE和编辑器
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# 操作系统
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+
+# 项目特定文件
+*.log
+*.sqlite
+*.db
+/dist/
+/build/
+.env
+.env.local
+
+# 编译缓存
+*.o
+*.a
+
+# 调试文件
+debug
+debug.test
+
+# 临时文件
+tmp/
+temp/

@@ -1,0 +1,1779 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<meta property="og:title" content="Type: nic" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://linuxcontainers.org/lxd/docs/stable-5.0/reference/devices_nic/" />
+<meta property="og:site_name" content="LXD documentation" />
+<meta property="og:description" content="Network devices, also referred to as Network Interface Controllers or NICs, supply a connection to a network. LXD supports several different types of network devices ( NIC types). nictype vs. netwo..." />
+<meta property="og:image" content="https://linuxcontainers.org/static/img/containers.png" />
+<meta property="og:image:alt" content="LXD documentation" />
+<meta name="description" content="Network devices, also referred to as Network Interface Controllers or NICs, supply a connection to a network. LXD supports several different types of network devices ( NIC types). nictype vs. netwo..." />
+<link rel="index" title="Index" href="../../genindex/" /><link rel="search" title="Search" href="../../search/" /><link rel="next" title="Type: disk" href="../devices_disk/" /><link rel="prev" title="Type: none" href="../devices_none/" />
+
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/><!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
+        <title>Type: nic - LXD documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="../../_static/youtube.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/related-links.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  --font-stack: Ubuntu, -apple-system, Segoe UI, Roboto, Oxygen, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  --font-stack--monospace: Ubuntu Mono, Consolas, Monaco, Courier, monospace;
+  --color-foreground-primary: #111;
+  --color-foreground-secondary: var(--color-foreground-primary);
+  --color-foreground-muted: #333;
+  --color-background-secondary: #FFF;
+  --color-background-hover: #f2f2f2;
+  --color-brand-primary: #111;
+  --color-brand-content: #06C;
+  --color-api-background: #cdcdcd;
+  --color-inline-code-background: rgba(0,0,0,.03);
+  --color-sidebar-link-text: #111;
+  --color-sidebar-item-background--current: #ebebeb;
+  --color-sidebar-item-background--hover: #f2f2f2;
+  --toc-font-size: var(--font-size--small);
+  --color-admonition-title-background--note: var(--color-background-primary);
+  --color-admonition-title-background--tip: var(--color-background-primary);
+  --color-admonition-title-background--important: var(--color-background-primary);
+  --color-admonition-title-background--caution: var(--color-background-primary);
+  --color-admonition-title--note: #24598F;
+  --color-admonition-title--tip: #24598F;
+  --color-admonition-title--important: #C7162B;
+  --color-admonition-title--caution: #F99B11;
+  --color-highlighted-background: #EbEbEb;
+  --color-link-underline: var(--color-background-primary);
+  --color-link-underline--hover: var(--color-background-primary);
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-foreground-secondary: var(--color-foreground-primary);
+  --color-foreground-muted: #CDCDCD;
+  --color-background-secondary: var(--color-background-primary);
+  --color-background-hover: #666;
+  --color-brand-primary: #fff;
+  --color-brand-content: #06C;
+  --color-sidebar-link-text: #f7f7f7;
+  --color-sidebar-item-background--current: #666;
+  --color-sidebar-item-background--hover: #333;
+  --color-admonition-background: transparent;
+  --color-admonition-title-background--note: var(--color-background-primary);
+  --color-admonition-title-background--tip: var(--color-background-primary);
+  --color-admonition-title-background--important: var(--color-background-primary);
+  --color-admonition-title-background--caution: var(--color-background-primary);
+  --color-admonition-title--note: #24598F;
+  --color-admonition-title--tip: #24598F;
+  --color-admonition-title--important: #C7162B;
+  --color-admonition-title--caution: #F99B11;
+  --color-highlighted-background: #666;
+  --color-link-underline: var(--color-background-primary);
+  --color-link-underline--hover: var(--color-background-primary);
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-foreground-secondary: var(--color-foreground-primary);
+  --color-foreground-muted: #CDCDCD;
+  --color-background-secondary: var(--color-background-primary);
+  --color-background-hover: #666;
+  --color-brand-primary: #fff;
+  --color-brand-content: #06C;
+  --color-sidebar-link-text: #f7f7f7;
+  --color-sidebar-item-background--current: #666;
+  --color-sidebar-item-background--hover: #333;
+  --color-admonition-background: transparent;
+  --color-admonition-title-background--note: var(--color-background-primary);
+  --color-admonition-title-background--tip: var(--color-background-primary);
+  --color-admonition-title-background--important: var(--color-background-primary);
+  --color-admonition-title-background--caution: var(--color-background-primary);
+  --color-admonition-title--note: #24598F;
+  --color-admonition-title--tip: #24598F;
+  --color-admonition-title--important: #C7162B;
+  --color-admonition-title--caution: #F99B11;
+  --color-highlighted-background: #666;
+  --color-link-underline: var(--color-background-primary);
+  --color-link-underline--hover: var(--color-background-primary);
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    <header id="header" class="p-navigation">
+
+  <style>
+    .p-navigation {
+      border-bottom: 1px solid var(--color-sidebar-background-border);
+    }
+
+    .p-navigation__nav {
+      display: flex;
+    }
+
+    ul.p-navigation__links {
+      display: flex;
+      list-style: none;
+      margin-left: 0;
+      margin-top: auto;
+      margin-bottom: auto;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    ul.p-navigation__links li {
+      margin: 0 auto;
+      text-align: center;
+      width: 100%;
+    }
+
+    ul.p-navigation__links li a {
+      background-color: rgba(0, 0, 0, 0);
+      border: none;
+      border-radius: 0;
+      color: var(--color-sidebar-link-text);
+      display: block;
+      font-weight: 400;
+      line-height: 1.5rem;
+      margin: 0;
+      overflow: hidden;
+      padding: 1rem 0;
+      position: relative;
+      text-align: left;
+      text-overflow: ellipsis;
+      transition-duration: .1s;
+      transition-property: background-color, color, opacity;
+      transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+      white-space: nowrap;
+      width: 100%;
+    }
+
+    ul.p-navigation__links .p-navigation__link,
+    ul.p-navigation__links .p-navigation__logo {
+      text-align: center;
+    }
+
+    ul.p-navigation__links .p-navigation__link:hover,
+    ul.p-navigation__links .p-dropdown__link:hover {
+      background-color: var(--color-sidebar-item-background--hover);
+    }
+
+    ul.p-navigation__links .p-navigation__sub-link {
+      background: var(--color-background-primary);
+      padding: .5rem 0 .5rem .5rem;
+      font-weight: 300;
+    }
+
+    ul.p-navigation__links .more-links-dropdown li a {
+      border-left: 1px solid var(--color-sidebar-background-border);
+      border-right: 1px solid var(--color-sidebar-background-border);
+    }
+
+    ul.p-navigation__links .more-links-dropdown li:first-child a {
+      border-top: 1px solid var(--color-sidebar-background-border);
+    }
+
+    ul.p-navigation__links .more-links-dropdown li:last-child a {
+      border-bottom: 1px solid var(--color-sidebar-background-border);
+    }
+
+    ul.p-navigation__links .p-navigation__logo {
+      padding: 0.5rem;
+    }
+
+    ul.p-navigation__links .p-navigation__logo img {
+      width: 40px;
+    }
+
+    ul.more-links-dropdown {
+      display: none;
+      overflow-x: visible;
+      height: 0;
+      z-index: 55;
+      padding: 0;
+      position: relative;
+      list-style: none;
+      margin-bottom: 0;
+      margin-top: 0;
+    }
+
+    ul.p-navigation__links li:first-child {
+      width: 130px;
+    }
+
+    @media only screen and (min-width: 800px) {
+      .nav-more-links::after {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath fill='%23111' d='M8.187 11.748l6.187-6.187-1.06-1.061-5.127 5.127L3.061 4.5 2 5.561z'/%3E%3C/svg%3E");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        content: "";
+        display: block;
+        height: 1rem;
+        pointer-events: none;
+        position: absolute;
+        right: 1rem;
+        text-indent: calc(100% + 10rem);
+        top: calc(1rem + 0.25rem);
+        width: 1rem;
+      }
+
+      body[data-theme=dark] .nav-more-links::after {
+        background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><path stroke='white' fill='white' d='M8.187 11.748l6.187-6.187-1.06-1.061-5.127 5.127L3.061 4.5 2 5.561z'/></svg>");
+      }
+
+      ul.p-navigation__links li:first-child {
+        width: 100%;
+      }
+    }
+
+    @media only screen and (min-width: 1310px) {
+      ul.p-navigation__links {
+        margin-left: calc(50% - 41em);
+      }
+    }
+
+  </style>
+
+  <div class="p-navigation__nav" role="menubar">
+
+    <ul class="p-navigation__links" role="menu">
+
+      <li>
+        <a class="p-navigation__logo" href="/">
+          <img src="../../_static/download/containers.small.png" alt="Linux containers logo" border="0" />
+        </a>
+      </li>
+
+      <li>
+        <a href="/" class="p-navigation__link">Home</a>
+      </li>
+
+      <li>
+        <a href="/lxd/try-it/" class="p-navigation__link">Demo</a>
+      </li>
+
+
+      <li>
+        <a href="#" class="p-navigation__link nav-more-links">More resources</a>
+        <ul class="more-links-dropdown">
+          <li>
+            <a href="/lxd/introduction/" class="p-navigation__sub-link p-dropdown__link">Introduction</a>
+          </li>
+
+          <li>
+            <a href="/lxd/news/" class="p-navigation__sub-link p-dropdown__link">News</a>
+          </li>
+
+          <li>
+            <a href="/lxd/getting-started-cli/" class="p-navigation__sub-link is-selected p-dropdown__link">Getting started</a>
+          </li>
+
+          <li>
+            <a href="/lxd/third-party-integrations/" class="p-navigation__sub-link p-dropdown__link">Third-party integrations</a>
+          </li>
+
+          <li>
+            <a href="/lxd/advanced-guide/" class="p-navigation__sub-link p-dropdown__link">Advanced guide</a>
+          </li>
+
+          <li>
+            <a href="https://discuss.linuxcontainers.org" class="p-navigation__sub-link p-dropdown__link">Forum</a>
+          </li>
+
+          <li>
+            <a href="https://github.com/lxc/lxd" class="p-navigation__sub-link p-dropdown__link">GitHub</a>
+          </li>
+
+        </ul>
+      </li>
+
+    </ul>
+  </div>
+</header>
+   
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../"><div class="brand">LXD  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="version_dropdown">
+  Doc version: <button onclick="dropdown()" class="version_select" id="current"></button>
+  <div id="all-versions" class="available_versions"></div>
+</div><form class="sidebar-search-container" method="get" action="../../search/" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../">LXD</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../getting_started/">Getting started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../requirements/">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installing/">Install LXD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/initialize/">Initialize LXD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/">Frequently asked</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing/">Contributing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../support/">Support</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../security/">Security</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../explanation/security/">About security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../authentication/">Remote API authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/server_expose/">Expose LXD to the network</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../instances/">Instances</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../explanation/instances/">About instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/instances_create/">Create instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/instances_manage/">Manage instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/instances_configure/">Configure instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/instances_snapshots/">Create snapshots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../profiles/">Use profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../instance-exec/">Run commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/instances_console/">Access the console</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/instances_access_files/">Access files</a></li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../../explanation/instance_config/">Instance configuration</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../instance_properties/">Instance properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../instance_options/">Instance options</a></li>
+<li class="toctree-l3 current has-children"><a class="reference internal" href="../devices/">Devices</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../standard_devices/">Standard devices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../devices_none/">Type: <code class="docutils literal notranslate"><span class="pre">none</span></code></a></li>
+<li class="toctree-l4 current current-page"><a class="current reference internal" href="#">Type: <code class="docutils literal notranslate"><span class="pre">nic</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../devices_disk/">Type: <code class="docutils literal notranslate"><span class="pre">disk</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../devices_unix_char/">Type: <code class="docutils literal notranslate"><span class="pre">unix-char</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../devices_unix_block/">Type: <code class="docutils literal notranslate"><span class="pre">unix-block</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../devices_usb/">Type: <code class="docutils literal notranslate"><span class="pre">usb</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../devices_gpu/">Type: <code class="docutils literal notranslate"><span class="pre">gpu</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../devices_infiniband/">Type: <code class="docutils literal notranslate"><span class="pre">infiniband</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../devices_proxy/">Type: <code class="docutils literal notranslate"><span class="pre">proxy</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../devices_unix_hotplug/">Type: <code class="docutils literal notranslate"><span class="pre">unix-hotplug</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../devices_tpm/">Type: <code class="docutils literal notranslate"><span class="pre">tpm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../devices_pci/">Type: <code class="docutils literal notranslate"><span class="pre">pci</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../instance_units/">Units for storage and network limits</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../images/">Images</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../architectures/">Architectures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cloud-init/">Cloud-init</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../image-handling/">Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../storage/">Storage</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../explanation/storage/">About storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/storage_pools/">Manage pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/storage_create_instance/">Create an instance in a pool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/storage_volumes/">Manage volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/storage_move_volume/">Move or copy a volume</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/storage_backup_volume/">Back up a volume</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../storage_drivers/">Storage drivers</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../storage_dir/">Directory - <code class="docutils literal notranslate"><span class="pre">dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../storage_btrfs/">Btrfs - <code class="docutils literal notranslate"><span class="pre">btrfs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../storage_lvm/">LVM - <code class="docutils literal notranslate"><span class="pre">lvm</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../storage_zfs/">ZFS - <code class="docutils literal notranslate"><span class="pre">zfs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../storage_ceph/">Ceph RBD - <code class="docutils literal notranslate"><span class="pre">ceph</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../storage_cephfs/">CephFS - <code class="docutils literal notranslate"><span class="pre">cephfs</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../networks/">Networking</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../explanation/networks/">About networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/network_create/">Create and configure a network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/network_acls/">Configure network ACLs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/network_forwards/">Configure network forwards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/network_zones/">Configure network zones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/network_bgp/">Configure LXD as BGP server</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../network_bridge/">Bridge network</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../howto/network_bridge_resolved/">Integrate with resolved</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../howto/network_bridge_firewalld/">Configure your firewall</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../network_ovn/">OVN network</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../howto/network_ovn_setup/">Set up OVN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../howto/network_ovn_peers/">Create routing relationships</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../network_external/">External networks</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../network_macvlan/">Macvlan network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../network_sriov/">SR-IOV network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../network_physical/">Physical network</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../clustering/">Clustering</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../explanation/clustering/">About clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/cluster_form/">Form a cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/cluster_manage/">Manage a cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/cluster_recover/">Recover a cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/cluster_manage_instance/">Manage instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/cluster_config_storage/">Configure storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/cluster_config_networks/">Configure networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/cluster_groups/">Set up cluster groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cluster_member_config/">Cluster member configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../operation/">Manage LXD</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../server/">Server configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../projects/">Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../remotes/">Remotes</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../explanation/performance_tuning/">Performance tuning</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../howto/benchmark_performance/">Benchmark performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../howto/network_increase_bandwidth/">Increase bandwidth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../server_settings/">Server settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../backup/">Backups</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../migration/">Migration</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../howto/move_instances/">Move instances</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../howto/import_machines_to_instances/">Import existing machines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../howto/migrate_from_lxc/">Migrate from LXC</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../restapi_landing/">REST API</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../rest-api/">Main API documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/">Main API specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api-extensions/">Main API extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dev-lxd/">Instance API documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../events/">Events API documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../metrics/">Metrics API documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../internals/">Internals &amp; debugging</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../container-environment/">Container environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../daemon-behavior/">Daemon behavior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../database/">Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging/">Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../environment/">Environment variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../syscall-interception/">System call interception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../userns-idmap/">User namespace setup</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../external_resources/">External resources</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://github.com/lxc/lxd">Project repository</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://images.linuxcontainers.org">Image server</a></li>
+</ul>
+</li>
+</ul>
+
+</div></div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="type-nic">
+<span id="devices-nic"></span><h1>Type: <code class="docutils literal notranslate"><span class="pre">nic</span></code><a class="headerlink" href="#type-nic" title="Permalink to this heading">#</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">nic</span></code> device type is supported for both containers and VMs.</p>
+<p>Most NICs support hotplugging for both containers and VMs.
+See the description for each NIC type for exceptions.</p>
+</div>
+<p>Network devices, also referred to as <em>Network Interface Controllers</em> or <em>NICs</em>, supply a connection to a network.
+LXD supports several different types of network devices (<em>NIC types</em>).</p>
+<section id="nictype-vs-network">
+<h2><code class="docutils literal notranslate"><span class="pre">nictype</span></code> vs. <code class="docutils literal notranslate"><span class="pre">network</span></code><a class="headerlink" href="#nictype-vs-network" title="Permalink to this heading">#</a></h2>
+<p>When adding a network device to an instance, there are two methods to specify the type of device that you want to add: through the <code class="docutils literal notranslate"><span class="pre">nictype</span></code> device option or the <code class="docutils literal notranslate"><span class="pre">network</span></code> device option.</p>
+<p>These two device options are mutually exclusive, and you can specify only one of them when you create a device.
+However, note that when you specify the <code class="docutils literal notranslate"><span class="pre">network</span></code> option, the <code class="docutils literal notranslate"><span class="pre">nictype</span></code> option is derived automatically from the network type.</p>
+<dl class="simple myst">
+<dt><code class="docutils literal notranslate"><span class="pre">nictype</span></code></dt><dd><p>When using the <code class="docutils literal notranslate"><span class="pre">nictype</span></code> device option, you can specify a network interface that is not controlled by LXD.
+Therefore, you must specify all information that LXD needs to use the network interface.</p>
+<p>When using this method, the <code class="docutils literal notranslate"><span class="pre">nictype</span></code> option must be specified when creating the device, and it cannot be changed later.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">network</span></code></dt><dd><p>When using the <code class="docutils literal notranslate"><span class="pre">network</span></code> device option, the NIC is linked to an existing <a class="reference internal" href="../../explanation/networks/#managed-networks"><span class="std std-ref">managed network</span></a>.
+In this case, LXD has all required information about the network, and you need to specify only the network name when adding the device.</p>
+<p>When using this method, LXD derives the <code class="docutils literal notranslate"><span class="pre">nictype</span></code> option automatically.
+The value is read-only and cannot be changed.</p>
+<p>Other device options that are inherited from the network are marked with a “yes” in the “Managed” column of the NIC-specific tables of device options.
+You cannot customize these options directly for the NIC if you’re using the <code class="docutils literal notranslate"><span class="pre">network</span></code> method.</p>
+</dd>
+</dl>
+<p>See <a class="reference internal" href="../../explanation/networks/#networks"><span class="std std-ref">About networking</span></a> for more information.</p>
+</section>
+<section id="available-nic-types">
+<h2>Available NIC types<a class="headerlink" href="#available-nic-types" title="Permalink to this heading">#</a></h2>
+<p>The following NICs can be added using the <code class="docutils literal notranslate"><span class="pre">nictype</span></code> or <code class="docutils literal notranslate"><span class="pre">network</span></code> options:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#nic-bridged"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">bridged</span></code></span></a>: Uses an existing bridge on the host and creates a virtual device pair to connect the host bridge to the instance.</p></li>
+<li><p><a class="reference internal" href="#nic-macvlan"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">macvlan</span></code></span></a>: Sets up a new network device based on an existing one, but using a different MAC address.</p></li>
+<li><p><a class="reference internal" href="#nic-sriov"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">sriov</span></code></span></a>: Passes a virtual function of an SR-IOV-enabled physical network device into the instance.</p></li>
+</ul>
+<p>The following NICs can be added using only the <code class="docutils literal notranslate"><span class="pre">network</span></code> option:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#nic-ovn"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">ovn</span></code></span></a>: Uses an existing OVN network and creates a virtual device pair to connect the instance to it.</p></li>
+</ul>
+<p>The following NICs can be added using only the <code class="docutils literal notranslate"><span class="pre">nictype</span></code> option:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#nic-physical"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">physical</span></code></span></a>: Passes a physical device from the host through to the instance.
+The targeted device will vanish from the host and appear in the instance.</p></li>
+<li><p><a class="reference internal" href="#nic-ipvlan"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">ipvlan</span></code></span></a>: Sets up a new network device based on an existing one, using the same MAC address but a different IP.</p></li>
+<li><p><a class="reference internal" href="#nic-p2p"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">p2p</span></code></span></a>: Creates a virtual device pair, putting one side in the instance and leaving the other side on the host.</p></li>
+<li><p><a class="reference internal" href="#nic-routed"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">routed</span></code></span></a>: Creates a virtual device pair to connect the host to the instance and sets up static routes and proxy ARP/NDP entries to allow the instance to join the network of a designated parent interface.</p></li>
+</ul>
+<p>The available device options depend on the NIC type and are listed in the tables in the following sections.</p>
+<section id="nictype-bridged">
+<span id="nic-bridged"></span><h3><code class="docutils literal notranslate"><span class="pre">nictype</span></code>: <code class="docutils literal notranslate"><span class="pre">bridged</span></code><a class="headerlink" href="#nictype-bridged" title="Permalink to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can select this NIC type through the <code class="docutils literal notranslate"><span class="pre">nictype</span></code> option or the <code class="docutils literal notranslate"><span class="pre">network</span></code> option.</p>
+</div>
+<p>A <code class="docutils literal notranslate"><span class="pre">bridged</span></code> NIC uses an existing bridge on the host and creates a virtual device pair to connect the host bridge to the instance.</p>
+<section id="device-options">
+<h4>Device options<a class="headerlink" href="#device-options" title="Permalink to this heading">#</a></h4>
+<p>NIC devices of type <code class="docutils literal notranslate"><span class="pre">bridged</span></code> have the following device options:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Key</p></th>
+<th class="head text-left"><p>Type</p></th>
+<th class="head text-left"><p>Default</p></th>
+<th class="head text-left"><p>Managed</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">boot.priority</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Boot priority for VMs (higher value boots first)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">host_name</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>randomly assigned</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>The name of the interface inside the host</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">hwaddr</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>randomly assigned</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>The MAC address of the new interface</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv4.address</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>An IPv4 address to assign to the instance through DHCP (can be <code class="docutils literal notranslate"><span class="pre">none</span></code> to restrict all IPv4 traffic when <code class="docutils literal notranslate"><span class="pre">security.ipv4_filtering</span></code> is set)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv4.routes</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Comma-delimited list of IPv4 static routes to add on host to NIC</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv4.routes.external</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Comma-delimited list of IPv4 static routes to route to the NIC and publish on uplink network (BGP)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv6.address</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>An IPv6 address to assign to the instance through DHCP (can be <code class="docutils literal notranslate"><span class="pre">none</span></code> to restrict all IPv6 traffic when <code class="docutils literal notranslate"><span class="pre">security.ipv6_filtering</span></code> is set)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv6.routes</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Comma-delimited list of IPv6 static routes to add on host to NIC</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv6.routes.external</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Comma-delimited list of IPv6 static routes to route to the NIC and publish on uplink network (BGP)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">limits.egress</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>I/O limit in bit/s for outgoing traffic (various suffixes supported, see <a class="reference internal" href="../instance_units/#instances-limit-units"><span class="std std-ref">Units for storage and network limits</span></a>)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">limits.ingress</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>I/O limit in bit/s for incoming traffic (various suffixes supported, see <a class="reference internal" href="../instance_units/#instances-limit-units"><span class="std std-ref">Units for storage and network limits</span></a>)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">limits.max</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>I/O limit in bit/s for both incoming and outgoing traffic (same as setting both <code class="docutils literal notranslate"><span class="pre">limits.ingress</span></code> and <code class="docutils literal notranslate"><span class="pre">limits.egress</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">maas.subnet.ipv4</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>yes</p></td>
+<td class="text-left"><p>MAAS IPv4 subnet to register the instance in</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">maas.subnet.ipv6</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>yes</p></td>
+<td class="text-left"><p>MAAS IPv6 subnet to register the instance in</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">mtu</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>parent MTU</p></td>
+<td class="text-left"><p>yes</p></td>
+<td class="text-left"><p>The MTU of the new interface</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>kernel assigned</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>The name of the interface inside the instance</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">network</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>The managed network to link the device to (instead of specifying the <code class="docutils literal notranslate"><span class="pre">nictype</span></code> directly)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">parent</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>yes</p></td>
+<td class="text-left"><p>The name of the host device (required if specifying the <code class="docutils literal notranslate"><span class="pre">nictype</span></code> directly)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">security.ipv4_filtering</span></code></p></td>
+<td class="text-left"><p>bool</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Prevent the instance from spoofing another instance’s IPv4 address (enables <code class="docutils literal notranslate"><span class="pre">security.mac_filtering</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">security.ipv6_filtering</span></code></p></td>
+<td class="text-left"><p>bool</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Prevent the instance from spoofing another instance’s IPv6 address (enables <code class="docutils literal notranslate"><span class="pre">security.mac_filtering</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">security.mac_filtering</span></code></p></td>
+<td class="text-left"><p>bool</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Prevent the instance from spoofing another instance’s MAC address</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">security.port_isolation</span></code></p></td>
+<td class="text-left"><p>bool</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Prevent the NIC from communicating with other NICs in the network that have port isolation enabled</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">vlan</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>The VLAN ID to use for non-tagged traffic (can be <code class="docutils literal notranslate"><span class="pre">none</span></code> to remove port from default VLAN)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">vlan.tagged</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Comma-delimited list of VLAN IDs or VLAN ranges to join for tagged traffic</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="nictype-macvlan">
+<span id="nic-macvlan"></span><h3><code class="docutils literal notranslate"><span class="pre">nictype</span></code>: <code class="docutils literal notranslate"><span class="pre">macvlan</span></code><a class="headerlink" href="#nictype-macvlan" title="Permalink to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can select this NIC type through the <code class="docutils literal notranslate"><span class="pre">nictype</span></code> option or the <code class="docutils literal notranslate"><span class="pre">network</span></code> option.</p>
+</div>
+<p>A <code class="docutils literal notranslate"><span class="pre">macvlan</span></code> NIC sets up a new network device based on an existing one, but using a different MAC address.</p>
+<section id="id1">
+<h4>Device options<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
+<p>NIC devices of type <code class="docutils literal notranslate"><span class="pre">macvlan</span></code> have the following device options:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Key</p></th>
+<th class="head text-left"><p>Type</p></th>
+<th class="head text-left"><p>Default</p></th>
+<th class="head text-left"><p>Managed</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">boot.priority</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Boot priority for VMs (higher value boots first)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">gvrp</span></code></p></td>
+<td class="text-left"><p>bool</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Register VLAN using GARP VLAN Registration Protocol</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">hwaddr</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>randomly assigned</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>The MAC address of the new interface</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">maas.subnet.ipv4</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>yes</p></td>
+<td class="text-left"><p>MAAS IPv4 subnet to register the instance in</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">maas.subnet.ipv6</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>yes</p></td>
+<td class="text-left"><p>MAAS IPv6 subnet to register the instance in</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">mtu</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>parent MTU</p></td>
+<td class="text-left"><p>yes</p></td>
+<td class="text-left"><p>The MTU of the new interface</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>kernel assigned</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>The name of the interface inside the instance</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">network</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>The managed network to link the device to (instead of specifying the <code class="docutils literal notranslate"><span class="pre">nictype</span></code> directly)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">parent</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>yes</p></td>
+<td class="text-left"><p>The name of the host device (required if specifying the <code class="docutils literal notranslate"><span class="pre">nictype</span></code> directly)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">vlan</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>The VLAN ID to attach to</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="nictype-sriov">
+<span id="nic-sriov"></span><h3><code class="docutils literal notranslate"><span class="pre">nictype</span></code>: <code class="docutils literal notranslate"><span class="pre">sriov</span></code><a class="headerlink" href="#nictype-sriov" title="Permalink to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can select this NIC type through the <code class="docutils literal notranslate"><span class="pre">nictype</span></code> option or the <code class="docutils literal notranslate"><span class="pre">network</span></code> option.</p>
+</div>
+<p>An <code class="docutils literal notranslate"><span class="pre">sriov</span></code> NIC passes a virtual function of an SR-IOV-enabled physical network device into the instance.</p>
+<p>An SR-IOV-enabled network device associates a set of virtual functions (VFs) with the single physical function (PF) of the network device.
+PFs are standard PCIe functions.
+VFs, on the other hand, are very lightweight PCIe functions that are optimized for data movement.
+They come with a limited set of configuration capabilities to prevent changing properties of the PF.</p>
+<p>Given that VFs appear as regular PCIe devices to the system, they can be passed to instances just like a regular physical device.</p>
+<dl class="simple myst">
+<dt>VF allocation</dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">sriov</span></code> interface type expects to be passed the name of an SR-IOV enabled network device on the system via the <code class="docutils literal notranslate"><span class="pre">parent</span></code> property.
+LXD then checks for any available VFs on the system.</p>
+<p>By default, LXD allocates the first free VF it finds.
+If it detects that either none are enabled or all currently enabled VFs are in use, it bumps the number of supported VFs to the maximum value and uses the first free VF.
+If all possible VFs are in use or the kernel or card doesn’t support incrementing the number of VFs, LXD returns an error.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you need LXD to use a specific VF, use a <code class="docutils literal notranslate"><span class="pre">physical</span></code> NIC instead of a <code class="docutils literal notranslate"><span class="pre">sriov</span></code> NIC and set its <code class="docutils literal notranslate"><span class="pre">parent</span></code> option to the VF name.</p>
+</div>
+</dd>
+</dl>
+<section id="id2">
+<h4>Device options<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
+<p>NIC devices of type <code class="docutils literal notranslate"><span class="pre">sriov</span></code> have the following device options:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Key</p></th>
+<th class="head text-left"><p>Type</p></th>
+<th class="head text-left"><p>Default</p></th>
+<th class="head text-left"><p>Managed</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">boot.priority</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Boot priority for VMs (higher value boots first)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">hwaddr</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>randomly assigned</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>The MAC address of the new interface</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">maas.subnet.ipv4</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>yes</p></td>
+<td class="text-left"><p>MAAS IPv4 subnet to register the instance in</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">maas.subnet.ipv6</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>yes</p></td>
+<td class="text-left"><p>MAAS IPv6 subnet to register the instance in</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">mtu</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>kernel assigned</p></td>
+<td class="text-left"><p>yes</p></td>
+<td class="text-left"><p>The MTU of the new interface</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>kernel assigned</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>The name of the interface inside the instance</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">network</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>The managed network to link the device to (instead of specifying the <code class="docutils literal notranslate"><span class="pre">nictype</span></code> directly)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">parent</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>yes</p></td>
+<td class="text-left"><p>The name of the host device (required if specifying the <code class="docutils literal notranslate"><span class="pre">nictype</span></code> directly)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">security.mac_filtering</span></code></p></td>
+<td class="text-left"><p>bool</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Prevent the instance from spoofing another instance’s MAC address</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">vlan</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>The VLAN ID to attach to</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="nictype-ovn">
+<span id="nic-ovn"></span><h3><code class="docutils literal notranslate"><span class="pre">nictype</span></code>: <code class="docutils literal notranslate"><span class="pre">ovn</span></code><a class="headerlink" href="#nictype-ovn" title="Permalink to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>You can select this NIC type only through the <code class="docutils literal notranslate"><span class="pre">network</span></code> option.</p></li>
+<li><p>This NIC type supports hotplugging only for containers, not for VMs.</p></li>
+</ul>
+</div>
+<p>An <code class="docutils literal notranslate"><span class="pre">ovn</span></code> NIC uses an existing OVN network and creates a virtual device pair to connect the instance to it.</p>
+<dl class="simple myst" id="devices-nic-hw-acceleration">
+<dt>SR-IOV hardware acceleration</dt><dd><p>To use <code class="docutils literal notranslate"><span class="pre">acceleration=sriov</span></code>, you must have a compatible SR-IOV physical NIC that supports the Ethernet switch device driver model (<code class="docutils literal notranslate"><span class="pre">switchdev</span></code>) in your LXD host.
+LXD assumes that the physical NIC (PF) is configured in <code class="docutils literal notranslate"><span class="pre">switchdev</span></code> mode and connected to the OVN integration OVS bridge, and that it has one or more virtual functions (VFs) active.</p>
+<p>To achieve this, follow these basic prerequisite setup steps:</p>
+<ol class="arabic">
+<li><p>Set up PF and VF:</p>
+<ol class="arabic simple">
+<li><p>Activate some VFs on PF (called <code class="docutils literal notranslate"><span class="pre">enp9s0f0np0</span></code> in the following example, with a PCI address of <code class="docutils literal notranslate"><span class="pre">0000:09:00.0</span></code>) and unbind them.</p></li>
+<li><p>Enable <code class="docutils literal notranslate"><span class="pre">switchdev</span></code> mode and <code class="docutils literal notranslate"><span class="pre">hw-tc-offload</span></code> on the PF.</p></li>
+<li><p>Rebind the VFs.</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>echo 4 &gt; /sys/bus/pci/devices/0000:09:00.0/sriov_numvfs
+for i in $(lspci -nnn | grep &quot;Virtual Function&quot; | cut -d&#39; &#39; -f1); do echo 0000:$i &gt; /sys/bus/pci/drivers/mlx5_core/unbind; done
+devlink dev eswitch set pci/0000:09:00.0 mode switchdev
+ethtool -K enp9s0f0np0 hw-tc-offload on
+for i in $(lspci -nnn | grep &quot;Virtual Function&quot; | cut -d&#39; &#39; -f1); do echo 0000:$i &gt; /sys/bus/pci/drivers/mlx5_core/bind; done
+</pre></div>
+</div>
+</li>
+<li><p>Set up OVS by enabling hardware offload and adding the PF NIC to the integration bridge (normally called <code class="docutils literal notranslate"><span class="pre">br-int</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ovs</span><span class="o">-</span><span class="n">vsctl</span> <span class="nb">set</span> <span class="n">open_vswitch</span> <span class="o">.</span> <span class="n">other_config</span><span class="p">:</span><span class="n">hw</span><span class="o">-</span><span class="n">offload</span><span class="o">=</span><span class="n">true</span>
+<span class="n">systemctl</span> <span class="n">restart</span> <span class="n">openvswitch</span><span class="o">-</span><span class="n">switch</span>
+<span class="n">ovs</span><span class="o">-</span><span class="n">vsctl</span> <span class="n">add</span><span class="o">-</span><span class="n">port</span> <span class="n">br</span><span class="o">-</span><span class="nb">int</span> <span class="n">enp9s0f0np0</span>
+<span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">enp9s0f0np0</span> <span class="n">up</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</dd>
+</dl>
+<section id="id3">
+<h4>Device options<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
+<p>NIC devices of type <code class="docutils literal notranslate"><span class="pre">ovn</span></code> have the following device options:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Key</p></th>
+<th class="head text-left"><p>Type</p></th>
+<th class="head text-left"><p>Default</p></th>
+<th class="head text-left"><p>Managed</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">acceleration</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">none</span></code></p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Enable hardware offloading (either <code class="docutils literal notranslate"><span class="pre">none</span></code> or <code class="docutils literal notranslate"><span class="pre">sriov</span></code>, see <a class="reference internal" href="#devices-nic-hw-acceleration"><span class="std std-ref">SR-IOV hardware acceleration</span></a>)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">boot.priority</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Boot priority for VMs (higher value boots first)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">host_name</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>randomly assigned</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>The name of the interface inside the host</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">hwaddr</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>randomly assigned</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>The MAC address of the new interface</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv4.address</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>An IPv4 address to assign to the instance through DHCP</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv4.routes</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Comma-delimited list of IPv4 static routes to route to the NIC</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv4.routes.external</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Comma-delimited list of IPv4 static routes to route to the NIC and publish on uplink network</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv6.address</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>An IPv6 address to assign to the instance through DHCP</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv6.routes</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Comma-delimited list of IPv6 static routes to route to the NIC</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv6.routes.external</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Comma-delimited list of IPv6 static routes to route to the NIC and publish on uplink network</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>kernel assigned</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>The name of the interface inside the instance</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">network</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>yes</p></td>
+<td class="text-left"><p>The managed network to link the device to (required)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">security.acls</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Comma-separated list of network ACLs to apply</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">security.acls.default.egress.action</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">reject</span></code></p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Action to use for egress traffic that doesn’t match any ACL rule</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">security.acls.default.egress.logged</span></code></p></td>
+<td class="text-left"><p>bool</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Whether to log egress traffic that doesn’t match any ACL rule</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">security.acls.default.ingress.action</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">reject</span></code></p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Action to use for ingress traffic that doesn’t match any ACL rule</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">security.acls.default.ingress.logged</span></code></p></td>
+<td class="text-left"><p>bool</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td class="text-left"><p>no</p></td>
+<td class="text-left"><p>Whether to log ingress traffic that doesn’t match any ACL rule</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="nictype-physical">
+<span id="nic-physical"></span><h3><code class="docutils literal notranslate"><span class="pre">nictype</span></code>: <code class="docutils literal notranslate"><span class="pre">physical</span></code><a class="headerlink" href="#nictype-physical" title="Permalink to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>You can select this NIC type only through the <code class="docutils literal notranslate"><span class="pre">nictype</span></code> option.
+(The <a class="reference internal" href="../network_physical/#network-physical"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">physical</span></code> network type</span></a> can only be used to provide an uplink network for the <a class="reference internal" href="../network_ovn/#network-ovn"><span class="std std-ref">OVN network</span></a>.)</p></li>
+<li><p>You can have only one <code class="docutils literal notranslate"><span class="pre">physical</span></code> NIC for each parent device.</p></li>
+</ul>
+</div>
+<p>A <code class="docutils literal notranslate"><span class="pre">physical</span></code> NIC provides straight physical device pass-through from the host.
+The targeted device will vanish from the host and appear in the instance (which means that you can have only one <code class="docutils literal notranslate"><span class="pre">physical</span></code> NIC for each targeted device).</p>
+<section id="id4">
+<h4>Device options<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
+<p>NIC devices of type <code class="docutils literal notranslate"><span class="pre">physical</span></code> have the following device options:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Key</p></th>
+<th class="head text-left"><p>Type</p></th>
+<th class="head text-left"><p>Default</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">boot.priority</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>Boot priority for VMs (higher value boots first)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">gvrp</span></code></p></td>
+<td class="text-left"><p>bool</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td class="text-left"><p>Register VLAN using GARP VLAN Registration Protocol</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">hwaddr</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>randomly assigned</p></td>
+<td class="text-left"><p>The MAC address of the new interface</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">maas.subnet.ipv4</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>MAAS IPv4 subnet to register the instance in</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">maas.subnet.ipv6</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>MAAS IPv6 subnet to register the instance in</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">mtu</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>parent MTU</p></td>
+<td class="text-left"><p>The MTU of the new interface</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>kernel assigned</p></td>
+<td class="text-left"><p>The name of the interface inside the instance</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">parent</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>The name of the host device (required)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">vlan</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>The VLAN ID to attach to</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="nictype-ipvlan">
+<span id="nic-ipvlan"></span><h3><code class="docutils literal notranslate"><span class="pre">nictype</span></code>: <code class="docutils literal notranslate"><span class="pre">ipvlan</span></code><a class="headerlink" href="#nictype-ipvlan" title="Permalink to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>This NIC type is available only for containers, not for virtual machines.</p></li>
+<li><p>You can select this NIC type only through the <code class="docutils literal notranslate"><span class="pre">nictype</span></code> option.</p></li>
+<li><p>This NIC type does not support hotplugging.</p></li>
+</ul>
+</div>
+<p>An <code class="docutils literal notranslate"><span class="pre">ipvlan</span></code> NIC sets up a new network device based on an existing one, using the same MAC address but a different IP.</p>
+<p>LXD currently supports IPVLAN in L2 and L3S mode.
+In this mode, the gateway is automatically set by LXD, but the IP addresses must be manually specified using the <code class="docutils literal notranslate"><span class="pre">ipv4.address</span></code> and/or <code class="docutils literal notranslate"><span class="pre">ipv6.address</span></code> options before the container is started.</p>
+<dl class="simple myst">
+<dt>DNS</dt><dd><p>The name servers must be configured inside the container, because they are not set automatically.
+To do this, set the following <code class="docutils literal notranslate"><span class="pre">sysctls</span></code>:</p>
+<ul>
+<li><p>When using IPv4 addresses:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">net</span><span class="o">.</span><span class="n">ipv4</span><span class="o">.</span><span class="n">conf</span><span class="o">.&lt;</span><span class="n">parent</span><span class="o">&gt;.</span><span class="n">forwarding</span><span class="o">=</span><span class="mi">1</span>
+</pre></div>
+</div>
+</li>
+<li><p>When using IPv6 addresses:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">net</span><span class="o">.</span><span class="n">ipv6</span><span class="o">.</span><span class="n">conf</span><span class="o">.&lt;</span><span class="n">parent</span><span class="o">&gt;.</span><span class="n">forwarding</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">net</span><span class="o">.</span><span class="n">ipv6</span><span class="o">.</span><span class="n">conf</span><span class="o">.&lt;</span><span class="n">parent</span><span class="o">&gt;.</span><span class="n">proxy_ndp</span><span class="o">=</span><span class="mi">1</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd>
+</dl>
+<section id="id5">
+<h4>Device options<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h4>
+<p>NIC devices of type <code class="docutils literal notranslate"><span class="pre">ipvlan</span></code> have the following device options:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Key</p></th>
+<th class="head text-left"><p>Type</p></th>
+<th class="head text-left"><p>Default</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">gvrp</span></code></p></td>
+<td class="text-left"><p>bool</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td class="text-left"><p>Register VLAN using GARP VLAN Registration Protocol</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">hwaddr</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>randomly assigned</p></td>
+<td class="text-left"><p>The MAC address of the new interface</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv4.address</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>Comma-delimited list of IPv4 static addresses to add to the instance (in <code class="docutils literal notranslate"><span class="pre">l2</span></code> mode, these can be specified as CIDR values or singular addresses using a subnet of <code class="docutils literal notranslate"><span class="pre">/24</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv4.gateway</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">auto</span></code> (<code class="docutils literal notranslate"><span class="pre">l3s</span></code>), - (<code class="docutils literal notranslate"><span class="pre">l2</span></code>)</p></td>
+<td class="text-left"><p>In <code class="docutils literal notranslate"><span class="pre">l3s</span></code> mode, whether to add an automatic default IPv4 gateway (can be <code class="docutils literal notranslate"><span class="pre">auto</span></code> or <code class="docutils literal notranslate"><span class="pre">none</span></code>); in <code class="docutils literal notranslate"><span class="pre">l2</span></code> mode, the IPv4 address of the gateway</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv4.host_table</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>The custom policy routing table ID to add IPv4 static routes to (in addition to the main routing table)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv6.address</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>Comma-delimited list of IPv6 static addresses to add to the instance (in <code class="docutils literal notranslate"><span class="pre">l2</span></code> mode, these can be specified as CIDR values or singular addresses using a subnet of <code class="docutils literal notranslate"><span class="pre">/64</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv6.gateway</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">auto</span></code> (<code class="docutils literal notranslate"><span class="pre">l3s</span></code>), - (<code class="docutils literal notranslate"><span class="pre">l2</span></code>)</p></td>
+<td class="text-left"><p>In <code class="docutils literal notranslate"><span class="pre">l3s</span></code> mode, whether to add an automatic default IPv6 gateway (can be <code class="docutils literal notranslate"><span class="pre">auto</span></code> or <code class="docutils literal notranslate"><span class="pre">none</span></code>); in <code class="docutils literal notranslate"><span class="pre">l2</span></code> mode, the IPv6 address of the gateway</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv6.host_table</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>The custom policy routing table ID to add IPv6 static routes to (in addition to the main routing table)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">mode</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">l3s</span></code></p></td>
+<td class="text-left"><p>The IPVLAN mode (either <code class="docutils literal notranslate"><span class="pre">l2</span></code> or <code class="docutils literal notranslate"><span class="pre">l3s</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">mtu</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>parent MTU</p></td>
+<td class="text-left"><p>The MTU of the new interface</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>kernel assigned</p></td>
+<td class="text-left"><p>The name of the interface inside the instance</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">parent</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>The name of the host device (required)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">vlan</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>The VLAN ID to attach to</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="nictype-p2p">
+<span id="nic-p2p"></span><h3><code class="docutils literal notranslate"><span class="pre">nictype</span></code>: <code class="docutils literal notranslate"><span class="pre">p2p</span></code><a class="headerlink" href="#nictype-p2p" title="Permalink to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can select this NIC type only through the <code class="docutils literal notranslate"><span class="pre">nictype</span></code> option.</p>
+</div>
+<p>A <code class="docutils literal notranslate"><span class="pre">p2p</span></code> NIC creates a virtual device pair, putting one side in the instance and leaving the other side on the host.</p>
+<section id="id6">
+<h4>Device options<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h4>
+<p>NIC devices of type <code class="docutils literal notranslate"><span class="pre">p2p</span></code> have the following device options:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Key</p></th>
+<th class="head text-left"><p>Type</p></th>
+<th class="head text-left"><p>Default</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">boot.priority</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>Boot priority for VMs (higher value boots first)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">host_name</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>randomly assigned</p></td>
+<td class="text-left"><p>The name of the interface inside the host</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">hwaddr</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>randomly assigned</p></td>
+<td class="text-left"><p>The MAC address of the new interface</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv4.routes</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>Comma-delimited list of IPv4 static routes to add on host to NIC</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv6.routes</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>Comma-delimited list of IPv6 static routes to add on host to NIC</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">limits.egress</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>I/O limit in bit/s for outgoing traffic (various suffixes supported, see <a class="reference internal" href="../instance_units/#instances-limit-units"><span class="std std-ref">Units for storage and network limits</span></a>)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">limits.ingress</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>I/O limit in bit/s for incoming traffic (various suffixes supported, see <a class="reference internal" href="../instance_units/#instances-limit-units"><span class="std std-ref">Units for storage and network limits</span></a>)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">limits.max</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>I/O limit in bit/s for both incoming and outgoing traffic (same as setting both <code class="docutils literal notranslate"><span class="pre">limits.ingress</span></code> and <code class="docutils literal notranslate"><span class="pre">limits.egress</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">mtu</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>kernel assigned</p></td>
+<td class="text-left"><p>The MTU of the new interface</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>kernel assigned</p></td>
+<td class="text-left"><p>The name of the interface inside the instance</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="nictype-routed">
+<span id="nic-routed"></span><h3><code class="docutils literal notranslate"><span class="pre">nictype</span></code>: <code class="docutils literal notranslate"><span class="pre">routed</span></code><a class="headerlink" href="#nictype-routed" title="Permalink to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can select this NIC type only through the <code class="docutils literal notranslate"><span class="pre">nictype</span></code> option.</p>
+</div>
+<p>A <code class="docutils literal notranslate"><span class="pre">routed</span></code> NIC creates a virtual device pair to connect the host to the instance and sets up static routes and proxy ARP/NDP entries to allow the instance to join the network of a designated parent interface.
+For containers it uses a virtual Ethernet device pair, and for VMs it uses a TAP device.</p>
+<p>This NIC type is similar in operation to <code class="docutils literal notranslate"><span class="pre">ipvlan</span></code>, in that it allows an instance to join an external network without needing to configure a bridge and shares the host’s MAC address.
+However, it differs from <code class="docutils literal notranslate"><span class="pre">ipvlan</span></code> because it does not need IPVLAN support in the kernel, and the host and the instance can communicate with each other.</p>
+<p>This NIC type respects <code class="docutils literal notranslate"><span class="pre">netfilter</span></code> rules on the host and uses the host’s routing table to route packets, which can be useful if the host is connected to multiple networks.</p>
+<dl class="simple myst">
+<dt>IP addresses, gateways and routes</dt><dd><p>You must manually specify the IP addresses (using <code class="docutils literal notranslate"><span class="pre">ipv4.address</span></code> and/or <code class="docutils literal notranslate"><span class="pre">ipv6.address</span></code>) before the instance is started.</p>
+<p>For containers, the NIC configures the following link-local gateway IPs on the host end and sets them as the default gateways in the container’s NIC interface:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>169.254.0.1
+fe80::1
+</pre></div>
+</div>
+<p>For VMs, the gateways must be configured manually or via a mechanism like <code class="docutils literal notranslate"><span class="pre">cloud-init</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If your container image is configured to perform DHCP on the interface, it will likely remove the automatically added configuration.
+In this case, you must configure the IP addresses and gateways manually or via a mechanism like <code class="docutils literal notranslate"><span class="pre">cloud-init</span></code>.</p>
+</div>
+<p>The NIC type configures static routes on the host pointing to the instance’s <code class="docutils literal notranslate"><span class="pre">veth</span></code> interface for all of the instance’s IPs.</p>
+</dd>
+<dt>Multiple IP addresses</dt><dd><p>Each NIC device can have multiple IP addresses added to it.</p>
+<p>However, it might be preferable to use multiple <code class="docutils literal notranslate"><span class="pre">routed</span></code> NIC interfaces instead.
+In this case, set the <code class="docutils literal notranslate"><span class="pre">ipv4.gateway</span></code> and <code class="docutils literal notranslate"><span class="pre">ipv6.gateway</span></code> values to <code class="docutils literal notranslate"><span class="pre">none</span></code> on any subsequent interfaces to avoid default gateway conflicts.
+Also consider specifying a different host-side address for these subsequent interfaces using <code class="docutils literal notranslate"><span class="pre">ipv4.host_address</span></code> and/or <code class="docutils literal notranslate"><span class="pre">ipv6.host_address</span></code>.</p>
+</dd>
+<dt>Parent interface</dt><dd><p>This NIC can operate with and without a <code class="docutils literal notranslate"><span class="pre">parent</span></code> network interface set.</p>
+<p>With the <code class="docutils literal notranslate"><span class="pre">parent</span></code> network interface set, proxy ARP/NDP entries of the instance’s IPs are added to the parent interface, which allows the instance to join the parent interface’s network at layer 2.</p>
+</dd>
+<dt>DNS</dt><dd><p>The name servers must be configured inside the instance, because they are not set automatically.
+To do this, set the following <code class="docutils literal notranslate"><span class="pre">sysctls</span></code>:</p>
+<ul>
+<li><p>When using IPv4 addresses:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">net</span><span class="o">.</span><span class="n">ipv4</span><span class="o">.</span><span class="n">conf</span><span class="o">.&lt;</span><span class="n">parent</span><span class="o">&gt;.</span><span class="n">forwarding</span><span class="o">=</span><span class="mi">1</span>
+</pre></div>
+</div>
+</li>
+<li><p>When using IPv6 addresses:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">net</span><span class="o">.</span><span class="n">ipv6</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">forwarding</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">net</span><span class="o">.</span><span class="n">ipv6</span><span class="o">.</span><span class="n">conf</span><span class="o">.&lt;</span><span class="n">parent</span><span class="o">&gt;.</span><span class="n">forwarding</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">net</span><span class="o">.</span><span class="n">ipv6</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">proxy_ndp</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">net</span><span class="o">.</span><span class="n">ipv6</span><span class="o">.</span><span class="n">conf</span><span class="o">.&lt;</span><span class="n">parent</span><span class="o">&gt;.</span><span class="n">proxy_ndp</span><span class="o">=</span><span class="mi">1</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd>
+</dl>
+<section id="id7">
+<h4>Device options<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h4>
+<p>NIC devices of type <code class="docutils literal notranslate"><span class="pre">routed</span></code> have the following device options:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Key</p></th>
+<th class="head text-left"><p>Type</p></th>
+<th class="head text-left"><p>Default</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">gvrp</span></code></p></td>
+<td class="text-left"><p>bool</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td class="text-left"><p>Register VLAN using GARP VLAN Registration Protocol</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">host_name</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>randomly assigned</p></td>
+<td class="text-left"><p>The name of the interface inside the host</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">hwaddr</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>randomly assigned</p></td>
+<td class="text-left"><p>The MAC address of the new interface</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv4.address</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>Comma-delimited list of IPv4 static addresses to add to the instance</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv4.gateway</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+<td class="text-left"><p>Whether to add an automatic default IPv4 gateway (can be <code class="docutils literal notranslate"><span class="pre">auto</span></code> or <code class="docutils literal notranslate"><span class="pre">none</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv4.host_address</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">169.254.0.1</span></code></p></td>
+<td class="text-left"><p>The IPv4 address to add to the host-side <code class="docutils literal notranslate"><span class="pre">veth</span></code> interface</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv4.host_table</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>The custom policy routing table ID to add IPv4 static routes to (in addition to the main routing table)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv4.neighbor_probe</span></code></p></td>
+<td class="text-left"><p>bool</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td class="text-left"><p>Whether to probe the parent network for IP address availability</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv4.routes</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>Comma-delimited list of IPv4 static routes to add on host to NIC (without L2 ARP/NDP proxy)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv6.address</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>Comma-delimited list of IPv6 static addresses to add to the instance</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv6.gateway</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+<td class="text-left"><p>Whether to add an automatic default IPv6 gateway (can be <code class="docutils literal notranslate"><span class="pre">auto</span></code> or <code class="docutils literal notranslate"><span class="pre">none</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv6.host_address</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">fe80::1</span></code></p></td>
+<td class="text-left"><p>The IPv6 address to add to the host-side <code class="docutils literal notranslate"><span class="pre">veth</span></code> interface</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv6.host_table</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>The custom policy routing table ID to add IPv6 static routes to (in addition to the main routing table)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv6.neighbor_probe</span></code></p></td>
+<td class="text-left"><p>bool</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td class="text-left"><p>Whether to probe the parent network for IP address availability</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ipv6.routes</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>Comma-delimited list of IPv6 static routes to add on host to NIC (without L2 ARP/NDP proxy)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">limits.egress</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>I/O limit in bit/s for outgoing traffic (various suffixes supported, see <a class="reference internal" href="../instance_units/#instances-limit-units"><span class="std std-ref">Units for storage and network limits</span></a>)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">limits.ingress</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>I/O limit in bit/s for incoming traffic (various suffixes supported, see <a class="reference internal" href="../instance_units/#instances-limit-units"><span class="std std-ref">Units for storage and network limits</span></a>)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">limits.max</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>I/O limit in bit/s for both incoming and outgoing traffic (same as setting both <code class="docutils literal notranslate"><span class="pre">limits.ingress</span></code> and <code class="docutils literal notranslate"><span class="pre">limits.egress</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">mtu</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>parent MTU</p></td>
+<td class="text-left"><p>The MTU of the new interface</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>kernel assigned</p></td>
+<td class="text-left"><p>The name of the interface inside the instance</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">parent</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>The name of the host device to join the instance to</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">vlan</span></code></p></td>
+<td class="text-left"><p>integer</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>The VLAN ID to attach to</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+</section>
+<section id="bridged-macvlan-or-ipvlan-for-connection-to-physical-network">
+<h2><code class="docutils literal notranslate"><span class="pre">bridged</span></code>, <code class="docutils literal notranslate"><span class="pre">macvlan</span></code> or <code class="docutils literal notranslate"><span class="pre">ipvlan</span></code> for connection to physical network<a class="headerlink" href="#bridged-macvlan-or-ipvlan-for-connection-to-physical-network" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">bridged</span></code>, <code class="docutils literal notranslate"><span class="pre">macvlan</span></code> and <code class="docutils literal notranslate"><span class="pre">ipvlan</span></code> interface types can be used to connect to an existing physical network.</p>
+<p><code class="docutils literal notranslate"><span class="pre">macvlan</span></code> effectively lets you fork your physical NIC, getting a second interface that is then used by the instance.
+This method saves you from creating a bridge device and virtual Ethernet device pairs and usually offers better performance than a bridge.</p>
+<p>The downside to this method is that <code class="docutils literal notranslate"><span class="pre">macvlan</span></code> devices, while able to communicate between themselves and to the outside, cannot talk to their parent device.
+This means that you can’t use <code class="docutils literal notranslate"><span class="pre">macvlan</span></code> if you ever need your instances to talk to the host itself.</p>
+<p>In such case, a <code class="docutils literal notranslate"><span class="pre">bridge</span></code> device is preferable.
+A bridge also lets you use MAC filtering and I/O limits, which cannot be applied to a <code class="docutils literal notranslate"><span class="pre">macvlan</span></code> device.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ipvlan</span></code> is similar to <code class="docutils literal notranslate"><span class="pre">macvlan</span></code>, with the difference being that the forked device has IPs statically assigned to it and inherits the parent’s MAC address on the network.</p>
+</section>
+<section id="maas-integration">
+<h2>MAAS integration<a class="headerlink" href="#maas-integration" title="Permalink to this heading">#</a></h2>
+<p>If you’re using MAAS to manage the physical network under your LXD host and want to attach your instances directly to a MAAS-managed network, LXD can be configured to interact with MAAS so that it can track your instances.</p>
+<p>At the daemon level, you must configure <code class="docutils literal notranslate"><span class="pre">maas.api.url</span></code> and <code class="docutils literal notranslate"><span class="pre">maas.api.key</span></code>, and then set the <code class="docutils literal notranslate"><span class="pre">maas.subnet.ipv4</span></code> and/or <code class="docutils literal notranslate"><span class="pre">maas.subnet.ipv6</span></code> keys on the instance or profile’s <code class="docutils literal notranslate"><span class="pre">nic</span></code> entry.</p>
+<p>With this configuration, LXD registers all your instances with MAAS, giving them proper DHCP leases and DNS records.</p>
+<p>If you set the <code class="docutils literal notranslate"><span class="pre">ipv4.address</span></code> or <code class="docutils literal notranslate"><span class="pre">ipv6.address</span></code> keys on the NIC, those are registered as static assignments in MAAS.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+   
+
+<div class="related-pages">
+  <a class="next-page" href="../devices_disk/">
+      <div class="page-info">
+        <div class="context">
+          <span>Next</span>
+        </div>
+        <div class="title">Type: <code class="docutils literal notranslate"><span class="pre">disk</span></code></div>
+      </div>
+      <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+    </a>
+  <a class="prev-page" href="../devices_none/">
+      <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+      <div class="page-info">
+        <div class="context">
+          <span>Previous</span>
+        </div>
+        
+        <div class="title">Type: <code class="docutils literal notranslate"><span class="pre">none</span></code></div>
+        
+      </div>
+    </a>
+</div>
+<div class="bottom-of-page">
+  <div class="left-details">
+    <div class="copyright">
+        Copyright &#169; 2014-2023 LXD contributors
+    </div>
+
+    <div class="last-updated">
+      Last updated on Jan 16, 2023</div>
+  </div>
+  <div class="right-details">
+
+    
+    <div class="show-source">
+      <a class="muted-link" href="../../_sources/reference/devices_nic.md.txt"
+         rel="nofollow">Show source</a>
+    </div>
+    
+    <div class="edit-github">
+      <a class="muted-link" href="https://github.com/lxc/lxd/edit/master/doc/reference/devices_nic.md">Edit on GitHub</a>
+    </div>
+    
+
+    </div>
+  </div>
+</div>
+
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+<div class="toc-sticky toc-scroll">
+   
+    <div class="toc-title-container">
+      <span class="toc-title">
+       Contents
+      </span>
+    </div>
+    <div class="toc-tree-container">
+      <div class="toc-tree">
+        <ul>
+<li><a class="reference internal" href="#">Type: <code class="docutils literal notranslate"><span class="pre">nic</span></code></a><ul>
+<li><a class="reference internal" href="#nictype-vs-network"><code class="docutils literal notranslate"><span class="pre">nictype</span></code> vs. <code class="docutils literal notranslate"><span class="pre">network</span></code></a></li>
+<li><a class="reference internal" href="#available-nic-types">Available NIC types</a><ul>
+<li><a class="reference internal" href="#nictype-bridged"><code class="docutils literal notranslate"><span class="pre">nictype</span></code>: <code class="docutils literal notranslate"><span class="pre">bridged</span></code></a><ul>
+<li><a class="reference internal" href="#device-options">Device options</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nictype-macvlan"><code class="docutils literal notranslate"><span class="pre">nictype</span></code>: <code class="docutils literal notranslate"><span class="pre">macvlan</span></code></a><ul>
+<li><a class="reference internal" href="#id1">Device options</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nictype-sriov"><code class="docutils literal notranslate"><span class="pre">nictype</span></code>: <code class="docutils literal notranslate"><span class="pre">sriov</span></code></a><ul>
+<li><a class="reference internal" href="#id2">Device options</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nictype-ovn"><code class="docutils literal notranslate"><span class="pre">nictype</span></code>: <code class="docutils literal notranslate"><span class="pre">ovn</span></code></a><ul>
+<li><a class="reference internal" href="#id3">Device options</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nictype-physical"><code class="docutils literal notranslate"><span class="pre">nictype</span></code>: <code class="docutils literal notranslate"><span class="pre">physical</span></code></a><ul>
+<li><a class="reference internal" href="#id4">Device options</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nictype-ipvlan"><code class="docutils literal notranslate"><span class="pre">nictype</span></code>: <code class="docutils literal notranslate"><span class="pre">ipvlan</span></code></a><ul>
+<li><a class="reference internal" href="#id5">Device options</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nictype-p2p"><code class="docutils literal notranslate"><span class="pre">nictype</span></code>: <code class="docutils literal notranslate"><span class="pre">p2p</span></code></a><ul>
+<li><a class="reference internal" href="#id6">Device options</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nictype-routed"><code class="docutils literal notranslate"><span class="pre">nictype</span></code>: <code class="docutils literal notranslate"><span class="pre">routed</span></code></a><ul>
+<li><a class="reference internal" href="#id7">Device options</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bridged-macvlan-or-ipvlan-for-connection-to-physical-network"><code class="docutils literal notranslate"><span class="pre">bridged</span></code>, <code class="docutils literal notranslate"><span class="pre">macvlan</span></code> or <code class="docutils literal notranslate"><span class="pre">ipvlan</span></code> for connection to physical network</a></li>
+<li><a class="reference internal" href="#maas-integration">MAAS integration</a></li>
+</ul>
+</li>
+</ul>
+
+      </div>
+    </div>
+   
+    
+  </div>
+
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/scripts/furo.js"></script>
+    <script src="../../_static/header-nav.js"></script>
+    <script src="../../_static/version-switcher.js"></script>
+    </body>
+</html>

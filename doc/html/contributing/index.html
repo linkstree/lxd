@@ -1,0 +1,878 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<meta property="og:title" content="Contributing" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://linuxcontainers.org/lxd/docs/stable-5.0/contributing/" />
+<meta property="og:site_name" content="LXD documentation" />
+<meta property="og:description" content="Check the following guidelines before contributing to the project. Pull requests: Changes to this project should be proposed as pull requests on GitHub at: https://github.com/lxc/lxd Proposed chang..." />
+<meta property="og:image" content="https://linuxcontainers.org/static/img/containers.png" />
+<meta property="og:image:alt" content="LXD documentation" />
+<meta name="description" content="Check the following guidelines before contributing to the project. Pull requests: Changes to this project should be proposed as pull requests on GitHub at: https://github.com/lxc/lxd Proposed chang..." />
+<link rel="index" title="Index" href="../genindex/" /><link rel="search" title="Search" href="../search/" /><link rel="next" title="Support" href="../support/" /><link rel="prev" title="Frequently asked questions" href="../faq/" />
+
+    <link rel="shortcut icon" href="../_static/favicon.ico"/><!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
+        <title>Contributing - LXD documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="../_static/youtube.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/related-links.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  --font-stack: Ubuntu, -apple-system, Segoe UI, Roboto, Oxygen, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  --font-stack--monospace: Ubuntu Mono, Consolas, Monaco, Courier, monospace;
+  --color-foreground-primary: #111;
+  --color-foreground-secondary: var(--color-foreground-primary);
+  --color-foreground-muted: #333;
+  --color-background-secondary: #FFF;
+  --color-background-hover: #f2f2f2;
+  --color-brand-primary: #111;
+  --color-brand-content: #06C;
+  --color-api-background: #cdcdcd;
+  --color-inline-code-background: rgba(0,0,0,.03);
+  --color-sidebar-link-text: #111;
+  --color-sidebar-item-background--current: #ebebeb;
+  --color-sidebar-item-background--hover: #f2f2f2;
+  --toc-font-size: var(--font-size--small);
+  --color-admonition-title-background--note: var(--color-background-primary);
+  --color-admonition-title-background--tip: var(--color-background-primary);
+  --color-admonition-title-background--important: var(--color-background-primary);
+  --color-admonition-title-background--caution: var(--color-background-primary);
+  --color-admonition-title--note: #24598F;
+  --color-admonition-title--tip: #24598F;
+  --color-admonition-title--important: #C7162B;
+  --color-admonition-title--caution: #F99B11;
+  --color-highlighted-background: #EbEbEb;
+  --color-link-underline: var(--color-background-primary);
+  --color-link-underline--hover: var(--color-background-primary);
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-foreground-secondary: var(--color-foreground-primary);
+  --color-foreground-muted: #CDCDCD;
+  --color-background-secondary: var(--color-background-primary);
+  --color-background-hover: #666;
+  --color-brand-primary: #fff;
+  --color-brand-content: #06C;
+  --color-sidebar-link-text: #f7f7f7;
+  --color-sidebar-item-background--current: #666;
+  --color-sidebar-item-background--hover: #333;
+  --color-admonition-background: transparent;
+  --color-admonition-title-background--note: var(--color-background-primary);
+  --color-admonition-title-background--tip: var(--color-background-primary);
+  --color-admonition-title-background--important: var(--color-background-primary);
+  --color-admonition-title-background--caution: var(--color-background-primary);
+  --color-admonition-title--note: #24598F;
+  --color-admonition-title--tip: #24598F;
+  --color-admonition-title--important: #C7162B;
+  --color-admonition-title--caution: #F99B11;
+  --color-highlighted-background: #666;
+  --color-link-underline: var(--color-background-primary);
+  --color-link-underline--hover: var(--color-background-primary);
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-foreground-secondary: var(--color-foreground-primary);
+  --color-foreground-muted: #CDCDCD;
+  --color-background-secondary: var(--color-background-primary);
+  --color-background-hover: #666;
+  --color-brand-primary: #fff;
+  --color-brand-content: #06C;
+  --color-sidebar-link-text: #f7f7f7;
+  --color-sidebar-item-background--current: #666;
+  --color-sidebar-item-background--hover: #333;
+  --color-admonition-background: transparent;
+  --color-admonition-title-background--note: var(--color-background-primary);
+  --color-admonition-title-background--tip: var(--color-background-primary);
+  --color-admonition-title-background--important: var(--color-background-primary);
+  --color-admonition-title-background--caution: var(--color-background-primary);
+  --color-admonition-title--note: #24598F;
+  --color-admonition-title--tip: #24598F;
+  --color-admonition-title--important: #C7162B;
+  --color-admonition-title--caution: #F99B11;
+  --color-highlighted-background: #666;
+  --color-link-underline: var(--color-background-primary);
+  --color-link-underline--hover: var(--color-background-primary);
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    <header id="header" class="p-navigation">
+
+  <style>
+    .p-navigation {
+      border-bottom: 1px solid var(--color-sidebar-background-border);
+    }
+
+    .p-navigation__nav {
+      display: flex;
+    }
+
+    ul.p-navigation__links {
+      display: flex;
+      list-style: none;
+      margin-left: 0;
+      margin-top: auto;
+      margin-bottom: auto;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    ul.p-navigation__links li {
+      margin: 0 auto;
+      text-align: center;
+      width: 100%;
+    }
+
+    ul.p-navigation__links li a {
+      background-color: rgba(0, 0, 0, 0);
+      border: none;
+      border-radius: 0;
+      color: var(--color-sidebar-link-text);
+      display: block;
+      font-weight: 400;
+      line-height: 1.5rem;
+      margin: 0;
+      overflow: hidden;
+      padding: 1rem 0;
+      position: relative;
+      text-align: left;
+      text-overflow: ellipsis;
+      transition-duration: .1s;
+      transition-property: background-color, color, opacity;
+      transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+      white-space: nowrap;
+      width: 100%;
+    }
+
+    ul.p-navigation__links .p-navigation__link,
+    ul.p-navigation__links .p-navigation__logo {
+      text-align: center;
+    }
+
+    ul.p-navigation__links .p-navigation__link:hover,
+    ul.p-navigation__links .p-dropdown__link:hover {
+      background-color: var(--color-sidebar-item-background--hover);
+    }
+
+    ul.p-navigation__links .p-navigation__sub-link {
+      background: var(--color-background-primary);
+      padding: .5rem 0 .5rem .5rem;
+      font-weight: 300;
+    }
+
+    ul.p-navigation__links .more-links-dropdown li a {
+      border-left: 1px solid var(--color-sidebar-background-border);
+      border-right: 1px solid var(--color-sidebar-background-border);
+    }
+
+    ul.p-navigation__links .more-links-dropdown li:first-child a {
+      border-top: 1px solid var(--color-sidebar-background-border);
+    }
+
+    ul.p-navigation__links .more-links-dropdown li:last-child a {
+      border-bottom: 1px solid var(--color-sidebar-background-border);
+    }
+
+    ul.p-navigation__links .p-navigation__logo {
+      padding: 0.5rem;
+    }
+
+    ul.p-navigation__links .p-navigation__logo img {
+      width: 40px;
+    }
+
+    ul.more-links-dropdown {
+      display: none;
+      overflow-x: visible;
+      height: 0;
+      z-index: 55;
+      padding: 0;
+      position: relative;
+      list-style: none;
+      margin-bottom: 0;
+      margin-top: 0;
+    }
+
+    ul.p-navigation__links li:first-child {
+      width: 130px;
+    }
+
+    @media only screen and (min-width: 800px) {
+      .nav-more-links::after {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath fill='%23111' d='M8.187 11.748l6.187-6.187-1.06-1.061-5.127 5.127L3.061 4.5 2 5.561z'/%3E%3C/svg%3E");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        content: "";
+        display: block;
+        height: 1rem;
+        pointer-events: none;
+        position: absolute;
+        right: 1rem;
+        text-indent: calc(100% + 10rem);
+        top: calc(1rem + 0.25rem);
+        width: 1rem;
+      }
+
+      body[data-theme=dark] .nav-more-links::after {
+        background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><path stroke='white' fill='white' d='M8.187 11.748l6.187-6.187-1.06-1.061-5.127 5.127L3.061 4.5 2 5.561z'/></svg>");
+      }
+
+      ul.p-navigation__links li:first-child {
+        width: 100%;
+      }
+    }
+
+    @media only screen and (min-width: 1310px) {
+      ul.p-navigation__links {
+        margin-left: calc(50% - 41em);
+      }
+    }
+
+  </style>
+
+  <div class="p-navigation__nav" role="menubar">
+
+    <ul class="p-navigation__links" role="menu">
+
+      <li>
+        <a class="p-navigation__logo" href="/">
+          <img src="../_static/download/containers.small.png" alt="Linux containers logo" border="0" />
+        </a>
+      </li>
+
+      <li>
+        <a href="/" class="p-navigation__link">Home</a>
+      </li>
+
+      <li>
+        <a href="/lxd/try-it/" class="p-navigation__link">Demo</a>
+      </li>
+
+
+      <li>
+        <a href="#" class="p-navigation__link nav-more-links">More resources</a>
+        <ul class="more-links-dropdown">
+          <li>
+            <a href="/lxd/introduction/" class="p-navigation__sub-link p-dropdown__link">Introduction</a>
+          </li>
+
+          <li>
+            <a href="/lxd/news/" class="p-navigation__sub-link p-dropdown__link">News</a>
+          </li>
+
+          <li>
+            <a href="/lxd/getting-started-cli/" class="p-navigation__sub-link is-selected p-dropdown__link">Getting started</a>
+          </li>
+
+          <li>
+            <a href="/lxd/third-party-integrations/" class="p-navigation__sub-link p-dropdown__link">Third-party integrations</a>
+          </li>
+
+          <li>
+            <a href="/lxd/advanced-guide/" class="p-navigation__sub-link p-dropdown__link">Advanced guide</a>
+          </li>
+
+          <li>
+            <a href="https://discuss.linuxcontainers.org" class="p-navigation__sub-link p-dropdown__link">Forum</a>
+          </li>
+
+          <li>
+            <a href="https://github.com/lxc/lxd" class="p-navigation__sub-link p-dropdown__link">GitHub</a>
+          </li>
+
+        </ul>
+      </li>
+
+    </ul>
+  </div>
+</header>
+   
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../"><div class="brand">LXD  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="version_dropdown">
+  Doc version: <button onclick="dropdown()" class="version_select" id="current"></button>
+  <div id="all-versions" class="available_versions"></div>
+</div><form class="sidebar-search-container" method="get" action="../search/" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../">LXD</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../getting_started/">Getting started</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../requirements/">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installing/">Install LXD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/initialize/">Initialize LXD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/">Frequently asked</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Contributing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../support/">Support</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../security/">Security</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/security/">About security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../authentication/">Remote API authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/server_expose/">Expose LXD to the network</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../instances/">Instances</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/instances/">About instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/instances_create/">Create instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/instances_manage/">Manage instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/instances_configure/">Configure instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/instances_snapshots/">Create snapshots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../profiles/">Use profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../instance-exec/">Run commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/instances_console/">Access the console</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/instances_access_files/">Access files</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../explanation/instance_config/">Instance configuration</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../reference/instance_properties/">Instance properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/instance_options/">Instance options</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../reference/devices/">Devices</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../reference/standard_devices/">Standard devices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_none/">Type: <code class="docutils literal notranslate"><span class="pre">none</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_nic/">Type: <code class="docutils literal notranslate"><span class="pre">nic</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_disk/">Type: <code class="docutils literal notranslate"><span class="pre">disk</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_unix_char/">Type: <code class="docutils literal notranslate"><span class="pre">unix-char</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_unix_block/">Type: <code class="docutils literal notranslate"><span class="pre">unix-block</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_usb/">Type: <code class="docutils literal notranslate"><span class="pre">usb</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_gpu/">Type: <code class="docutils literal notranslate"><span class="pre">gpu</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_infiniband/">Type: <code class="docutils literal notranslate"><span class="pre">infiniband</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_proxy/">Type: <code class="docutils literal notranslate"><span class="pre">proxy</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_unix_hotplug/">Type: <code class="docutils literal notranslate"><span class="pre">unix-hotplug</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_tpm/">Type: <code class="docutils literal notranslate"><span class="pre">tpm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_pci/">Type: <code class="docutils literal notranslate"><span class="pre">pci</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/instance_units/">Units for storage and network limits</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../images/">Images</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../architectures/">Architectures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cloud-init/">Cloud-init</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../image-handling/">Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../storage/">Storage</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/storage/">About storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/storage_pools/">Manage pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/storage_create_instance/">Create an instance in a pool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/storage_volumes/">Manage volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/storage_move_volume/">Move or copy a volume</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/storage_backup_volume/">Back up a volume</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../reference/storage_drivers/">Storage drivers</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../reference/storage_dir/">Directory - <code class="docutils literal notranslate"><span class="pre">dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/storage_btrfs/">Btrfs - <code class="docutils literal notranslate"><span class="pre">btrfs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/storage_lvm/">LVM - <code class="docutils literal notranslate"><span class="pre">lvm</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/storage_zfs/">ZFS - <code class="docutils literal notranslate"><span class="pre">zfs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/storage_ceph/">Ceph RBD - <code class="docutils literal notranslate"><span class="pre">ceph</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/storage_cephfs/">CephFS - <code class="docutils literal notranslate"><span class="pre">cephfs</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../networks/">Networking</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/networks/">About networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/network_create/">Create and configure a network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/network_acls/">Configure network ACLs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/network_forwards/">Configure network forwards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/network_zones/">Configure network zones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/network_bgp/">Configure LXD as BGP server</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../reference/network_bridge/">Bridge network</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howto/network_bridge_resolved/">Integrate with resolved</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/network_bridge_firewalld/">Configure your firewall</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../reference/network_ovn/">OVN network</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howto/network_ovn_setup/">Set up OVN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/network_ovn_peers/">Create routing relationships</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../reference/network_external/">External networks</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../reference/network_macvlan/">Macvlan network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/network_sriov/">SR-IOV network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/network_physical/">Physical network</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../clustering/">Clustering</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/clustering/">About clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/cluster_form/">Form a cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/cluster_manage/">Manage a cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/cluster_recover/">Recover a cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/cluster_manage_instance/">Manage instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/cluster_config_storage/">Configure storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/cluster_config_networks/">Configure networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/cluster_groups/">Set up cluster groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/cluster_member_config/">Cluster member configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../operation/">Manage LXD</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../server/">Server configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/">Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../remotes/">Remotes</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../explanation/performance_tuning/">Performance tuning</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howto/benchmark_performance/">Benchmark performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/network_increase_bandwidth/">Increase bandwidth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/server_settings/">Server settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../backup/">Backups</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../migration/">Migration</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howto/move_instances/">Move instances</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/import_machines_to_instances/">Import existing machines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/migrate_from_lxc/">Migrate from LXC</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../restapi_landing/">REST API</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../rest-api/">Main API documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/">Main API specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api-extensions/">Main API extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev-lxd/">Instance API documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../events/">Events API documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../metrics/">Metrics API documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../internals/">Internals &amp; debugging</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../container-environment/">Container environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../daemon-behavior/">Daemon behavior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database/">Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/">Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../environment/">Environment variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../syscall-interception/">System call interception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userns-idmap/">User namespace setup</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../external_resources/">External resources</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://github.com/lxc/lxd">Project repository</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://images.linuxcontainers.org">Image server</a></li>
+</ul>
+</li>
+</ul>
+
+</div></div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="contributing">
+<h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this heading">#</a></h1>
+<p>Check the following guidelines before contributing to the project.</p>
+<section id="pull-requests">
+<h2>Pull requests<a class="headerlink" href="#pull-requests" title="Permalink to this heading">#</a></h2>
+<p>Changes to this project should be proposed as pull requests on GitHub
+at: <a class="reference external" href="https://github.com/lxc/lxd"><code class="docutils literal notranslate"><span class="pre">https://github.com/lxc/lxd</span></code></a></p>
+<p>Proposed changes will then go through code review there and once approved,
+be merged in the main branch.</p>
+</section>
+<section id="commit-structure">
+<h2>Commit structure<a class="headerlink" href="#commit-structure" title="Permalink to this heading">#</a></h2>
+<p>Separate commits should be used for:</p>
+<ul class="simple">
+<li><p>API extension (<code class="docutils literal notranslate"><span class="pre">api:</span> <span class="pre">Add</span> <span class="pre">XYZ</span> <span class="pre">extension</span></code>, contains <code class="docutils literal notranslate"><span class="pre">doc/api-extensions.md</span></code> and <code class="docutils literal notranslate"><span class="pre">shared/version.api.go</span></code>)</p></li>
+<li><p>Documentation (<code class="docutils literal notranslate"><span class="pre">doc:</span> <span class="pre">Update</span> <span class="pre">XYZ</span></code> for files in <code class="docutils literal notranslate"><span class="pre">doc/</span></code>)</p></li>
+<li><p>API structure (<code class="docutils literal notranslate"><span class="pre">shared/api:</span> <span class="pre">Add</span> <span class="pre">XYZ</span></code> for changes to <code class="docutils literal notranslate"><span class="pre">shared/api/</span></code>)</p></li>
+<li><p>Go client package (<code class="docutils literal notranslate"><span class="pre">client:</span> <span class="pre">Add</span> <span class="pre">XYZ</span></code> for changes to <code class="docutils literal notranslate"><span class="pre">client/</span></code>)</p></li>
+<li><p>CLI (<code class="docutils literal notranslate"><span class="pre">lxc/&lt;command&gt;:</span> <span class="pre">Change</span> <span class="pre">XYZ</span></code> for changes to <code class="docutils literal notranslate"><span class="pre">lxc/</span></code>)</p></li>
+<li><p>Scripts (<code class="docutils literal notranslate"><span class="pre">scripts:</span> <span class="pre">Update</span> <span class="pre">bash</span> <span class="pre">completion</span> <span class="pre">for</span> <span class="pre">XYZ</span></code> for changes to <code class="docutils literal notranslate"><span class="pre">scripts/</span></code>)</p></li>
+<li><p>LXD daemon (<code class="docutils literal notranslate"><span class="pre">lxd/&lt;package&gt;:</span> <span class="pre">Add</span> <span class="pre">support</span> <span class="pre">for</span> <span class="pre">XYZ</span></code> for changes to <code class="docutils literal notranslate"><span class="pre">lxd/</span></code>)</p></li>
+<li><p>Tests (<code class="docutils literal notranslate"><span class="pre">tests:</span> <span class="pre">Add</span> <span class="pre">test</span> <span class="pre">for</span> <span class="pre">XYZ</span></code> for changes to <code class="docutils literal notranslate"><span class="pre">tests/</span></code>)</p></li>
+</ul>
+<p>The same kind of pattern extends to the other tools in the LXD code tree
+and depending on complexity, things may be split into even smaller chunks.</p>
+<p>When updating strings in the CLI tool (<code class="docutils literal notranslate"><span class="pre">lxc/</span></code>), you may need a commit to update the templates:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>make i18n
+git commit -a -s -m &quot;i18n: Update translation templates&quot; po/
+</pre></div>
+</div>
+<p>When updating API (<code class="docutils literal notranslate"><span class="pre">shared/api</span></code>), you may need a commit to update the swagger YAML:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>make update-api
+git commit -s -m &quot;doc/rest-api: Refresh swagger YAML&quot; doc/rest-api.yaml
+</pre></div>
+</div>
+<p>This structure makes it easier for contributions to be reviewed and also
+greatly simplifies the process of back-porting fixes to stable branches.</p>
+</section>
+<section id="license-and-copyright">
+<h2>License and copyright<a class="headerlink" href="#license-and-copyright" title="Permalink to this heading">#</a></h2>
+<p>By default, any contribution to this project is made under the Apache
+2.0 license.</p>
+<p>The author of a change remains the copyright holder of their code
+(no copyright assignment).</p>
+</section>
+<section id="developer-certificate-of-origin">
+<h2>Developer Certificate of Origin<a class="headerlink" href="#developer-certificate-of-origin" title="Permalink to this heading">#</a></h2>
+<p>To improve tracking of contributions to this project we use the DCO 1.1
+and use a “sign-off” procedure for all changes going into the branch.</p>
+<p>The sign-off is a simple line at the end of the explanation for the
+commit which certifies that you wrote it or otherwise have the right
+to pass it on as an open-source contribution.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Developer</span> <span class="n">Certificate</span> <span class="n">of</span> <span class="n">Origin</span>
+<span class="n">Version</span> <span class="mf">1.1</span>
+
+<span class="n">Copyright</span> <span class="p">(</span><span class="n">C</span><span class="p">)</span> <span class="mi">2004</span><span class="p">,</span> <span class="mi">2006</span> <span class="n">The</span> <span class="n">Linux</span> <span class="n">Foundation</span> <span class="ow">and</span> <span class="n">its</span> <span class="n">contributors</span><span class="o">.</span>
+<span class="mi">660</span> <span class="n">York</span> <span class="n">Street</span><span class="p">,</span> <span class="n">Suite</span> <span class="mi">102</span><span class="p">,</span>
+<span class="n">San</span> <span class="n">Francisco</span><span class="p">,</span> <span class="n">CA</span> <span class="mi">94110</span> <span class="n">USA</span>
+
+<span class="n">Everyone</span> <span class="ow">is</span> <span class="n">permitted</span> <span class="n">to</span> <span class="n">copy</span> <span class="ow">and</span> <span class="n">distribute</span> <span class="n">verbatim</span> <span class="n">copies</span> <span class="n">of</span> <span class="n">this</span>
+<span class="n">license</span> <span class="n">document</span><span class="p">,</span> <span class="n">but</span> <span class="n">changing</span> <span class="n">it</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">allowed</span><span class="o">.</span>
+
+<span class="n">Developer</span><span class="s1">&#39;s Certificate of Origin 1.1</span>
+
+<span class="n">By</span> <span class="n">making</span> <span class="n">a</span> <span class="n">contribution</span> <span class="n">to</span> <span class="n">this</span> <span class="n">project</span><span class="p">,</span> <span class="n">I</span> <span class="n">certify</span> <span class="n">that</span><span class="p">:</span>
+
+<span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="n">The</span> <span class="n">contribution</span> <span class="n">was</span> <span class="n">created</span> <span class="ow">in</span> <span class="n">whole</span> <span class="ow">or</span> <span class="ow">in</span> <span class="n">part</span> <span class="n">by</span> <span class="n">me</span> <span class="ow">and</span> <span class="n">I</span>
+    <span class="n">have</span> <span class="n">the</span> <span class="n">right</span> <span class="n">to</span> <span class="n">submit</span> <span class="n">it</span> <span class="n">under</span> <span class="n">the</span> <span class="nb">open</span> <span class="n">source</span> <span class="n">license</span>
+    <span class="n">indicated</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">file</span><span class="p">;</span> <span class="ow">or</span>
+
+<span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="n">The</span> <span class="n">contribution</span> <span class="ow">is</span> <span class="n">based</span> <span class="n">upon</span> <span class="n">previous</span> <span class="n">work</span> <span class="n">that</span><span class="p">,</span> <span class="n">to</span> <span class="n">the</span> <span class="n">best</span>
+    <span class="n">of</span> <span class="n">my</span> <span class="n">knowledge</span><span class="p">,</span> <span class="ow">is</span> <span class="n">covered</span> <span class="n">under</span> <span class="n">an</span> <span class="n">appropriate</span> <span class="nb">open</span> <span class="n">source</span>
+    <span class="n">license</span> <span class="ow">and</span> <span class="n">I</span> <span class="n">have</span> <span class="n">the</span> <span class="n">right</span> <span class="n">under</span> <span class="n">that</span> <span class="n">license</span> <span class="n">to</span> <span class="n">submit</span> <span class="n">that</span>
+    <span class="n">work</span> <span class="k">with</span> <span class="n">modifications</span><span class="p">,</span> <span class="n">whether</span> <span class="n">created</span> <span class="ow">in</span> <span class="n">whole</span> <span class="ow">or</span> <span class="ow">in</span> <span class="n">part</span>
+    <span class="n">by</span> <span class="n">me</span><span class="p">,</span> <span class="n">under</span> <span class="n">the</span> <span class="n">same</span> <span class="nb">open</span> <span class="n">source</span> <span class="n">license</span> <span class="p">(</span><span class="n">unless</span> <span class="n">I</span> <span class="n">am</span>
+    <span class="n">permitted</span> <span class="n">to</span> <span class="n">submit</span> <span class="n">under</span> <span class="n">a</span> <span class="n">different</span> <span class="n">license</span><span class="p">),</span> <span class="k">as</span> <span class="n">indicated</span>
+    <span class="ow">in</span> <span class="n">the</span> <span class="n">file</span><span class="p">;</span> <span class="ow">or</span>
+
+<span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="n">The</span> <span class="n">contribution</span> <span class="n">was</span> <span class="n">provided</span> <span class="n">directly</span> <span class="n">to</span> <span class="n">me</span> <span class="n">by</span> <span class="n">some</span> <span class="n">other</span>
+    <span class="n">person</span> <span class="n">who</span> <span class="n">certified</span> <span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="ow">and</span> <span class="n">I</span> <span class="n">have</span> <span class="ow">not</span> <span class="n">modified</span>
+    <span class="n">it</span><span class="o">.</span>
+
+<span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="n">I</span> <span class="n">understand</span> <span class="ow">and</span> <span class="n">agree</span> <span class="n">that</span> <span class="n">this</span> <span class="n">project</span> <span class="ow">and</span> <span class="n">the</span> <span class="n">contribution</span>
+    <span class="n">are</span> <span class="n">public</span> <span class="ow">and</span> <span class="n">that</span> <span class="n">a</span> <span class="n">record</span> <span class="n">of</span> <span class="n">the</span> <span class="n">contribution</span> <span class="p">(</span><span class="n">including</span> <span class="nb">all</span>
+    <span class="n">personal</span> <span class="n">information</span> <span class="n">I</span> <span class="n">submit</span> <span class="k">with</span> <span class="n">it</span><span class="p">,</span> <span class="n">including</span> <span class="n">my</span> <span class="n">sign</span><span class="o">-</span><span class="n">off</span><span class="p">)</span> <span class="ow">is</span>
+    <span class="n">maintained</span> <span class="n">indefinitely</span> <span class="ow">and</span> <span class="n">may</span> <span class="n">be</span> <span class="n">redistributed</span> <span class="n">consistent</span> <span class="k">with</span>
+    <span class="n">this</span> <span class="n">project</span> <span class="ow">or</span> <span class="n">the</span> <span class="nb">open</span> <span class="n">source</span> <span class="n">license</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="n">involved</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>An example of a valid sign-off line is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Signed</span><span class="o">-</span><span class="n">off</span><span class="o">-</span><span class="n">by</span><span class="p">:</span> <span class="n">Random</span> <span class="n">J</span> <span class="n">Developer</span> <span class="o">&lt;</span><span class="n">random</span><span class="nd">@developer</span><span class="o">.</span><span class="n">org</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Use your real name and a valid e-mail address.
+Sorry, no pseudonyms or anonymous contributions are allowed.</p>
+<p>We also require each commit be individually signed-off by their author,
+even when part of a larger set. You may find <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span> <span class="pre">-s</span></code> useful.</p>
+</section>
+<section id="code-of-conduct">
+<h2>Code of Conduct<a class="headerlink" href="#code-of-conduct" title="Permalink to this heading">#</a></h2>
+<p>When contributing, you must adhere to the Code of Conduct, which is available at: <a class="reference external" href="https://github.com/lxc/lxd/blob/master/CODE_OF_CONDUCT.md"><code class="docutils literal notranslate"><span class="pre">https://github.com/lxc/lxd/blob/master/CODE_OF_CONDUCT.md</span></code></a></p>
+</section>
+<section id="getting-started-developing">
+<h2>Getting Started Developing<a class="headerlink" href="#getting-started-developing" title="Permalink to this heading">#</a></h2>
+<p>Follow the steps below to set up your development environment to get started working on new features for LXD.</p>
+<section id="building-dependencies">
+<h3>Building Dependencies<a class="headerlink" href="#building-dependencies" title="Permalink to this heading">#</a></h3>
+<p>To build the dependencies, follow the instructions in <a class="reference internal" href="../installing/#installing-from-source"><span class="std std-ref">Install LXD from source</span></a>.</p>
+</section>
+<section id="adding-your-fork-remote">
+<h3>Adding Your Fork Remote<a class="headerlink" href="#adding-your-fork-remote" title="Permalink to this heading">#</a></h3>
+<p>After building your dependencies, you can now add your GitHub fork as a remote:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>git remote add myfork git@github.com:&lt;your_username&gt;/lxd.git
+git remote update
+</pre></div>
+</div>
+<p>Then switch to it:</p>
+<!-- wokeignore:rule=master -->
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>git checkout myfork/master
+</pre></div>
+</div>
+</section>
+<section id="building-lxd">
+<h3>Building LXD<a class="headerlink" href="#building-lxd" title="Permalink to this heading">#</a></h3>
+<p>Finally, you should be able to <code class="docutils literal notranslate"><span class="pre">make</span></code> inside the repository and build your fork of the project.</p>
+<p>At this point, you would most likely want to create a new branch for your changes on your fork:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span><span class="o">[</span>name_of_your_new_branch<span class="o">]</span>
+git<span class="w"> </span>push<span class="w"> </span>myfork<span class="w"> </span><span class="o">[</span>name_of_your_new_branch<span class="o">]</span>
+</pre></div>
+</div>
+</section>
+<section id="important-notes-for-new-lxd-contributors">
+<h3>Important Notes for New LXD Contributors<a class="headerlink" href="#important-notes-for-new-lxd-contributors" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Persistent data is stored in the <code class="docutils literal notranslate"><span class="pre">LXD_DIR</span></code> directory which is generated by <code class="docutils literal notranslate"><span class="pre">lxd</span> <span class="pre">init</span></code>. The <code class="docutils literal notranslate"><span class="pre">LXD_DIR</span></code> defaults to <code class="docutils literal notranslate"><span class="pre">/var/lib/lxd</span></code> or <code class="docutils literal notranslate"><span class="pre">/var/snap/lxd/common/lxd</span></code> for snap users.</p></li>
+<li><p>As you develop, you may want to change the <code class="docutils literal notranslate"><span class="pre">LXD_DIR</span></code> for your fork of LXD so as to avoid version conflicts.</p></li>
+<li><p>Binaries compiled from your source will be generated in the <code class="docutils literal notranslate"><span class="pre">$(go</span> <span class="pre">env</span> <span class="pre">GOPATH)/bin</span></code> directory by default.</p>
+<ul>
+<li><p>You will need to explicitly invoke these binaries (not the global <code class="docutils literal notranslate"><span class="pre">lxd</span></code> you may have installed) when testing your changes.</p></li>
+<li><p>You may choose to create an alias in your <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code> to call these binaries with the appropriate flags more conveniently.</p></li>
+</ul>
+</li>
+<li><p>If you have a <code class="docutils literal notranslate"><span class="pre">systemd</span></code> service configured to run the LXD daemon from a previous installation of LXD, you may want to disable it to avoid version conflicts.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+   
+
+<div class="related-pages">
+  <a class="next-page" href="../support/">
+      <div class="page-info">
+        <div class="context">
+          <span>Next</span>
+        </div>
+        <div class="title">Support</div>
+      </div>
+      <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+    </a>
+  <a class="prev-page" href="../faq/">
+      <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+      <div class="page-info">
+        <div class="context">
+          <span>Previous</span>
+        </div>
+        
+        <div class="title">Frequently asked questions</div>
+        
+      </div>
+    </a>
+</div>
+<div class="bottom-of-page">
+  <div class="left-details">
+    <div class="copyright">
+        Copyright &#169; 2014-2023 LXD contributors
+    </div>
+
+    <div class="last-updated">
+      Last updated on Jan 16, 2023</div>
+  </div>
+  <div class="right-details">
+
+    
+    <div class="show-source">
+      <a class="muted-link" href="../_sources/contributing.md.txt"
+         rel="nofollow">Show source</a>
+    </div>
+    
+    <div class="edit-github">
+      <a class="muted-link" href="https://github.com/lxc/lxd/edit/master/doc/contributing.md">Edit on GitHub</a>
+    </div>
+    
+
+    </div>
+  </div>
+</div>
+
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+<div class="toc-sticky toc-scroll">
+   
+    <div class="toc-title-container">
+      <span class="toc-title">
+       Contents
+      </span>
+    </div>
+    <div class="toc-tree-container">
+      <div class="toc-tree">
+        <ul>
+<li><a class="reference internal" href="#">Contributing</a><ul>
+<li><a class="reference internal" href="#pull-requests">Pull requests</a></li>
+<li><a class="reference internal" href="#commit-structure">Commit structure</a></li>
+<li><a class="reference internal" href="#license-and-copyright">License and copyright</a></li>
+<li><a class="reference internal" href="#developer-certificate-of-origin">Developer Certificate of Origin</a></li>
+<li><a class="reference internal" href="#code-of-conduct">Code of Conduct</a></li>
+<li><a class="reference internal" href="#getting-started-developing">Getting Started Developing</a><ul>
+<li><a class="reference internal" href="#building-dependencies">Building Dependencies</a></li>
+<li><a class="reference internal" href="#adding-your-fork-remote">Adding Your Fork Remote</a></li>
+<li><a class="reference internal" href="#building-lxd">Building LXD</a></li>
+<li><a class="reference internal" href="#important-notes-for-new-lxd-contributors">Important Notes for New LXD Contributors</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      </div>
+    </div>
+   
+    
+    <div class="relatedlinks-title-container">
+      <span class="relatedlinks-title">
+       Related links
+      </span>
+    </div>
+    <div class="relatedlinks-container">
+      <div class="relatedlinks">
+        
+        
+          <ul><li><a href="https://www.youtube.com/watch?v=pqV0Z1qwbkg" target="_blank">LXD's development process - YouTube</a></li></ul>
+        
+      </div>
+    </div>
+    
+  </div>
+
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    <script src="../_static/header-nav.js"></script>
+    <script src="../_static/version-switcher.js"></script>
+    </body>
+</html>

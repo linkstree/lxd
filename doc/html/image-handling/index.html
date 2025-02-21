@@ -1,0 +1,1009 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<meta property="og:title" content="Image handling" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://linuxcontainers.org/lxd/docs/stable-5.0/image-handling/" />
+<meta property="og:site_name" content="LXD documentation" />
+<meta property="og:description" content="Introduction: LXD uses an image based workflow. It comes with a built-in image store where the user or external tools can import images. Containers are then started from those images. It’s possible..." />
+<meta property="og:image" content="https://linuxcontainers.org/static/img/containers.png" />
+<meta property="og:image:alt" content="LXD documentation" />
+<meta name="description" content="Introduction: LXD uses an image based workflow. It comes with a built-in image store where the user or external tools can import images. Containers are then started from those images. It’s possible..." />
+<link rel="index" title="Index" href="../genindex/" /><link rel="search" title="Search" href="../search/" /><link rel="next" title="Storage" href="../storage/" /><link rel="prev" title="cloud-init" href="../cloud-init/" />
+
+    <link rel="shortcut icon" href="../_static/favicon.ico"/><!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
+        <title>Image handling - LXD documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="../_static/youtube.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/related-links.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  --font-stack: Ubuntu, -apple-system, Segoe UI, Roboto, Oxygen, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  --font-stack--monospace: Ubuntu Mono, Consolas, Monaco, Courier, monospace;
+  --color-foreground-primary: #111;
+  --color-foreground-secondary: var(--color-foreground-primary);
+  --color-foreground-muted: #333;
+  --color-background-secondary: #FFF;
+  --color-background-hover: #f2f2f2;
+  --color-brand-primary: #111;
+  --color-brand-content: #06C;
+  --color-api-background: #cdcdcd;
+  --color-inline-code-background: rgba(0,0,0,.03);
+  --color-sidebar-link-text: #111;
+  --color-sidebar-item-background--current: #ebebeb;
+  --color-sidebar-item-background--hover: #f2f2f2;
+  --toc-font-size: var(--font-size--small);
+  --color-admonition-title-background--note: var(--color-background-primary);
+  --color-admonition-title-background--tip: var(--color-background-primary);
+  --color-admonition-title-background--important: var(--color-background-primary);
+  --color-admonition-title-background--caution: var(--color-background-primary);
+  --color-admonition-title--note: #24598F;
+  --color-admonition-title--tip: #24598F;
+  --color-admonition-title--important: #C7162B;
+  --color-admonition-title--caution: #F99B11;
+  --color-highlighted-background: #EbEbEb;
+  --color-link-underline: var(--color-background-primary);
+  --color-link-underline--hover: var(--color-background-primary);
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-foreground-secondary: var(--color-foreground-primary);
+  --color-foreground-muted: #CDCDCD;
+  --color-background-secondary: var(--color-background-primary);
+  --color-background-hover: #666;
+  --color-brand-primary: #fff;
+  --color-brand-content: #06C;
+  --color-sidebar-link-text: #f7f7f7;
+  --color-sidebar-item-background--current: #666;
+  --color-sidebar-item-background--hover: #333;
+  --color-admonition-background: transparent;
+  --color-admonition-title-background--note: var(--color-background-primary);
+  --color-admonition-title-background--tip: var(--color-background-primary);
+  --color-admonition-title-background--important: var(--color-background-primary);
+  --color-admonition-title-background--caution: var(--color-background-primary);
+  --color-admonition-title--note: #24598F;
+  --color-admonition-title--tip: #24598F;
+  --color-admonition-title--important: #C7162B;
+  --color-admonition-title--caution: #F99B11;
+  --color-highlighted-background: #666;
+  --color-link-underline: var(--color-background-primary);
+  --color-link-underline--hover: var(--color-background-primary);
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-foreground-secondary: var(--color-foreground-primary);
+  --color-foreground-muted: #CDCDCD;
+  --color-background-secondary: var(--color-background-primary);
+  --color-background-hover: #666;
+  --color-brand-primary: #fff;
+  --color-brand-content: #06C;
+  --color-sidebar-link-text: #f7f7f7;
+  --color-sidebar-item-background--current: #666;
+  --color-sidebar-item-background--hover: #333;
+  --color-admonition-background: transparent;
+  --color-admonition-title-background--note: var(--color-background-primary);
+  --color-admonition-title-background--tip: var(--color-background-primary);
+  --color-admonition-title-background--important: var(--color-background-primary);
+  --color-admonition-title-background--caution: var(--color-background-primary);
+  --color-admonition-title--note: #24598F;
+  --color-admonition-title--tip: #24598F;
+  --color-admonition-title--important: #C7162B;
+  --color-admonition-title--caution: #F99B11;
+  --color-highlighted-background: #666;
+  --color-link-underline: var(--color-background-primary);
+  --color-link-underline--hover: var(--color-background-primary);
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    <header id="header" class="p-navigation">
+
+  <style>
+    .p-navigation {
+      border-bottom: 1px solid var(--color-sidebar-background-border);
+    }
+
+    .p-navigation__nav {
+      display: flex;
+    }
+
+    ul.p-navigation__links {
+      display: flex;
+      list-style: none;
+      margin-left: 0;
+      margin-top: auto;
+      margin-bottom: auto;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    ul.p-navigation__links li {
+      margin: 0 auto;
+      text-align: center;
+      width: 100%;
+    }
+
+    ul.p-navigation__links li a {
+      background-color: rgba(0, 0, 0, 0);
+      border: none;
+      border-radius: 0;
+      color: var(--color-sidebar-link-text);
+      display: block;
+      font-weight: 400;
+      line-height: 1.5rem;
+      margin: 0;
+      overflow: hidden;
+      padding: 1rem 0;
+      position: relative;
+      text-align: left;
+      text-overflow: ellipsis;
+      transition-duration: .1s;
+      transition-property: background-color, color, opacity;
+      transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+      white-space: nowrap;
+      width: 100%;
+    }
+
+    ul.p-navigation__links .p-navigation__link,
+    ul.p-navigation__links .p-navigation__logo {
+      text-align: center;
+    }
+
+    ul.p-navigation__links .p-navigation__link:hover,
+    ul.p-navigation__links .p-dropdown__link:hover {
+      background-color: var(--color-sidebar-item-background--hover);
+    }
+
+    ul.p-navigation__links .p-navigation__sub-link {
+      background: var(--color-background-primary);
+      padding: .5rem 0 .5rem .5rem;
+      font-weight: 300;
+    }
+
+    ul.p-navigation__links .more-links-dropdown li a {
+      border-left: 1px solid var(--color-sidebar-background-border);
+      border-right: 1px solid var(--color-sidebar-background-border);
+    }
+
+    ul.p-navigation__links .more-links-dropdown li:first-child a {
+      border-top: 1px solid var(--color-sidebar-background-border);
+    }
+
+    ul.p-navigation__links .more-links-dropdown li:last-child a {
+      border-bottom: 1px solid var(--color-sidebar-background-border);
+    }
+
+    ul.p-navigation__links .p-navigation__logo {
+      padding: 0.5rem;
+    }
+
+    ul.p-navigation__links .p-navigation__logo img {
+      width: 40px;
+    }
+
+    ul.more-links-dropdown {
+      display: none;
+      overflow-x: visible;
+      height: 0;
+      z-index: 55;
+      padding: 0;
+      position: relative;
+      list-style: none;
+      margin-bottom: 0;
+      margin-top: 0;
+    }
+
+    ul.p-navigation__links li:first-child {
+      width: 130px;
+    }
+
+    @media only screen and (min-width: 800px) {
+      .nav-more-links::after {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath fill='%23111' d='M8.187 11.748l6.187-6.187-1.06-1.061-5.127 5.127L3.061 4.5 2 5.561z'/%3E%3C/svg%3E");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        content: "";
+        display: block;
+        height: 1rem;
+        pointer-events: none;
+        position: absolute;
+        right: 1rem;
+        text-indent: calc(100% + 10rem);
+        top: calc(1rem + 0.25rem);
+        width: 1rem;
+      }
+
+      body[data-theme=dark] .nav-more-links::after {
+        background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><path stroke='white' fill='white' d='M8.187 11.748l6.187-6.187-1.06-1.061-5.127 5.127L3.061 4.5 2 5.561z'/></svg>");
+      }
+
+      ul.p-navigation__links li:first-child {
+        width: 100%;
+      }
+    }
+
+    @media only screen and (min-width: 1310px) {
+      ul.p-navigation__links {
+        margin-left: calc(50% - 41em);
+      }
+    }
+
+  </style>
+
+  <div class="p-navigation__nav" role="menubar">
+
+    <ul class="p-navigation__links" role="menu">
+
+      <li>
+        <a class="p-navigation__logo" href="/">
+          <img src="../_static/download/containers.small.png" alt="Linux containers logo" border="0" />
+        </a>
+      </li>
+
+      <li>
+        <a href="/" class="p-navigation__link">Home</a>
+      </li>
+
+      <li>
+        <a href="/lxd/try-it/" class="p-navigation__link">Demo</a>
+      </li>
+
+
+      <li>
+        <a href="#" class="p-navigation__link nav-more-links">More resources</a>
+        <ul class="more-links-dropdown">
+          <li>
+            <a href="/lxd/introduction/" class="p-navigation__sub-link p-dropdown__link">Introduction</a>
+          </li>
+
+          <li>
+            <a href="/lxd/news/" class="p-navigation__sub-link p-dropdown__link">News</a>
+          </li>
+
+          <li>
+            <a href="/lxd/getting-started-cli/" class="p-navigation__sub-link is-selected p-dropdown__link">Getting started</a>
+          </li>
+
+          <li>
+            <a href="/lxd/third-party-integrations/" class="p-navigation__sub-link p-dropdown__link">Third-party integrations</a>
+          </li>
+
+          <li>
+            <a href="/lxd/advanced-guide/" class="p-navigation__sub-link p-dropdown__link">Advanced guide</a>
+          </li>
+
+          <li>
+            <a href="https://discuss.linuxcontainers.org" class="p-navigation__sub-link p-dropdown__link">Forum</a>
+          </li>
+
+          <li>
+            <a href="https://github.com/lxc/lxd" class="p-navigation__sub-link p-dropdown__link">GitHub</a>
+          </li>
+
+        </ul>
+      </li>
+
+    </ul>
+  </div>
+</header>
+   
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../"><div class="brand">LXD  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="version_dropdown">
+  Doc version: <button onclick="dropdown()" class="version_select" id="current"></button>
+  <div id="all-versions" class="available_versions"></div>
+</div><form class="sidebar-search-container" method="get" action="../search/" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../">LXD</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../getting_started/">Getting started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../requirements/">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installing/">Install LXD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/initialize/">Initialize LXD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/">Frequently asked</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/">Contributing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../support/">Support</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../security/">Security</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/security/">About security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../authentication/">Remote API authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/server_expose/">Expose LXD to the network</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../instances/">Instances</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/instances/">About instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/instances_create/">Create instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/instances_manage/">Manage instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/instances_configure/">Configure instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/instances_snapshots/">Create snapshots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../profiles/">Use profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../instance-exec/">Run commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/instances_console/">Access the console</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/instances_access_files/">Access files</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../explanation/instance_config/">Instance configuration</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../reference/instance_properties/">Instance properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/instance_options/">Instance options</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../reference/devices/">Devices</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../reference/standard_devices/">Standard devices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_none/">Type: <code class="docutils literal notranslate"><span class="pre">none</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_nic/">Type: <code class="docutils literal notranslate"><span class="pre">nic</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_disk/">Type: <code class="docutils literal notranslate"><span class="pre">disk</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_unix_char/">Type: <code class="docutils literal notranslate"><span class="pre">unix-char</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_unix_block/">Type: <code class="docutils literal notranslate"><span class="pre">unix-block</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_usb/">Type: <code class="docutils literal notranslate"><span class="pre">usb</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_gpu/">Type: <code class="docutils literal notranslate"><span class="pre">gpu</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_infiniband/">Type: <code class="docutils literal notranslate"><span class="pre">infiniband</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_proxy/">Type: <code class="docutils literal notranslate"><span class="pre">proxy</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_unix_hotplug/">Type: <code class="docutils literal notranslate"><span class="pre">unix-hotplug</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_tpm/">Type: <code class="docutils literal notranslate"><span class="pre">tpm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/devices_pci/">Type: <code class="docutils literal notranslate"><span class="pre">pci</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/instance_units/">Units for storage and network limits</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../images/">Images</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../architectures/">Architectures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cloud-init/">Cloud-init</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../storage/">Storage</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/storage/">About storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/storage_pools/">Manage pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/storage_create_instance/">Create an instance in a pool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/storage_volumes/">Manage volumes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/storage_move_volume/">Move or copy a volume</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/storage_backup_volume/">Back up a volume</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../reference/storage_drivers/">Storage drivers</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../reference/storage_dir/">Directory - <code class="docutils literal notranslate"><span class="pre">dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/storage_btrfs/">Btrfs - <code class="docutils literal notranslate"><span class="pre">btrfs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/storage_lvm/">LVM - <code class="docutils literal notranslate"><span class="pre">lvm</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/storage_zfs/">ZFS - <code class="docutils literal notranslate"><span class="pre">zfs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/storage_ceph/">Ceph RBD - <code class="docutils literal notranslate"><span class="pre">ceph</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/storage_cephfs/">CephFS - <code class="docutils literal notranslate"><span class="pre">cephfs</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../networks/">Networking</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/networks/">About networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/network_create/">Create and configure a network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/network_acls/">Configure network ACLs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/network_forwards/">Configure network forwards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/network_zones/">Configure network zones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/network_bgp/">Configure LXD as BGP server</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../reference/network_bridge/">Bridge network</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howto/network_bridge_resolved/">Integrate with resolved</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/network_bridge_firewalld/">Configure your firewall</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../reference/network_ovn/">OVN network</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howto/network_ovn_setup/">Set up OVN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/network_ovn_peers/">Create routing relationships</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../reference/network_external/">External networks</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../reference/network_macvlan/">Macvlan network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/network_sriov/">SR-IOV network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/network_physical/">Physical network</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../clustering/">Clustering</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/clustering/">About clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/cluster_form/">Form a cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/cluster_manage/">Manage a cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/cluster_recover/">Recover a cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/cluster_manage_instance/">Manage instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/cluster_config_storage/">Configure storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/cluster_config_networks/">Configure networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/cluster_groups/">Set up cluster groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/cluster_member_config/">Cluster member configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../operation/">Manage LXD</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../server/">Server configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/">Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../remotes/">Remotes</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../explanation/performance_tuning/">Performance tuning</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howto/benchmark_performance/">Benchmark performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/network_increase_bandwidth/">Increase bandwidth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/server_settings/">Server settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../backup/">Backups</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../migration/">Migration</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howto/move_instances/">Move instances</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/import_machines_to_instances/">Import existing machines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/migrate_from_lxc/">Migrate from LXC</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../restapi_landing/">REST API</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../rest-api/">Main API documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/">Main API specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api-extensions/">Main API extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev-lxd/">Instance API documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../events/">Events API documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../metrics/">Metrics API documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../internals/">Internals &amp; debugging</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../container-environment/">Container environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../daemon-behavior/">Daemon behavior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database/">Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/">Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../environment/">Environment variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../syscall-interception/">System call interception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userns-idmap/">User namespace setup</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../external_resources/">External resources</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://github.com/lxc/lxd">Project repository</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://images.linuxcontainers.org">Image server</a></li>
+</ul>
+</li>
+</ul>
+
+</div></div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="image-handling">
+<span id="id1"></span><h1>Image handling<a class="headerlink" href="#image-handling" title="Permalink to this heading">#</a></h1>
+         <p class="youtube_link">           <a href="https://www.youtube.com/watch?v=wT7IDjo0Wgg" target="_blank">             <span title="Image servers and image handling in LXD - YouTube" class="play_icon">▶</span>             <span title="Image servers and image handling in LXD - YouTube">Watch on YouTube</span>           </a>         </p><section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<p>LXD uses an image based workflow. It comes with a built-in image store
+where the user or external tools can import images.</p>
+<p>Containers are then started from those images.</p>
+<p>It’s possible to spawn remote instances using local images or local
+instances using remote images. In such cases, the image may be cached
+on the target LXD.</p>
+</section>
+<section id="sources">
+<h2>Sources<a class="headerlink" href="#sources" title="Permalink to this heading">#</a></h2>
+<p>LXD supports importing images from three different sources:</p>
+<ul class="simple">
+<li><p>Remote image server (LXD or simplestreams)</p></li>
+<li><p>Direct pushing of the image files</p></li>
+<li><p>File on a remote web server</p></li>
+</ul>
+<section id="remote-image-server-lxd-or-simplestreams">
+<h3>Remote image server (LXD or simplestreams)<a class="headerlink" href="#remote-image-server-lxd-or-simplestreams" title="Permalink to this heading">#</a></h3>
+<p>This is the most common source of images and the only one of the three
+options which is supported directly at instance creation time.</p>
+<p>With this option, an image server is provided to the target LXD server
+along with any needed certificate to validate it (only HTTPS is supported).</p>
+<p>The image itself is then selected either by its fingerprint (SHA256) or
+one of its aliases.</p>
+<p>From a CLI point of view, this is what’s done behind those common actions:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>lxc launch ubuntu:22.04 u1
+lxc launch images:centos/8 c1
+lxc launch my-server:SHA256 a1
+lxc image copy images:gentoo local: --copy-aliases --auto-update
+</pre></div>
+</div>
+<p>In the cases of <code class="docutils literal notranslate"><span class="pre">ubuntu</span></code> and <code class="docutils literal notranslate"><span class="pre">images</span></code> above, those remotes use
+simplestreams as a read-only image server protocol and select images by
+one of their aliases.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">my-server</span></code> remote there is another LXD server and in that example
+selects an image based on its fingerprint.</p>
+</section>
+<section id="direct-pushing-of-the-image-files">
+<h3>Direct pushing of the image files<a class="headerlink" href="#direct-pushing-of-the-image-files" title="Permalink to this heading">#</a></h3>
+<p>This is mostly useful for air-gapped environments where images cannot be
+directly retrieved from an external server.</p>
+<p>In such a scenario, image files can be downloaded on another system using:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>lxc image export ubuntu:22.04
+</pre></div>
+</div>
+<p>Then transferred to the target system and manually imported into the
+local image store with:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>lxc image import META ROOTFS --alias ubuntu-22.04
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">lxc</span> <span class="pre">image</span> <span class="pre">import</span></code> supports both unified images (single file) and split
+images (two files) with the example above using the latter.</p>
+</section>
+<section id="file-on-a-remote-web-server">
+<h3>File on a remote web server<a class="headerlink" href="#file-on-a-remote-web-server" title="Permalink to this heading">#</a></h3>
+<p>As an alternative to running a full image server only to distribute a
+single image to users, LXD also supports importing images by URL.</p>
+<p>There are a few limitations to that method though:</p>
+<ul class="simple">
+<li><p>Only unified (single file) images are supported</p></li>
+<li><p>Additional HTTP headers must be returned by the remote server</p></li>
+</ul>
+<p>LXD will set the following headers when querying the server:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LXD-Server-Architectures</span></code> to a comma-separated list of architectures the client supports</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LXD-Server-Version</span></code> to the version of LXD in use</p></li>
+</ul>
+<p>And expects <code class="docutils literal notranslate"><span class="pre">LXD-Image-Hash</span></code> and <code class="docutils literal notranslate"><span class="pre">LXD-Image-URL</span></code> to be set by the remote server.
+The former being the SHA256 of the image being downloaded and the latter
+the URL to download the image from.</p>
+<p>This allows for reasonably complex image servers to be implemented using
+only a basic web server with support for custom headers.</p>
+<p>On the client side, this is used with:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>lxc image import URL --alias some-name
+</pre></div>
+</div>
+</section>
+<section id="publishing-an-instance-or-snapshot-as-a-new-image">
+<h3>Publishing an instance or snapshot as a new image<a class="headerlink" href="#publishing-an-instance-or-snapshot-as-a-new-image" title="Permalink to this heading">#</a></h3>
+<p>An instance or one of its snapshots can be turned into a new image.
+This is done on the CLI with <code class="docutils literal notranslate"><span class="pre">lxc</span> <span class="pre">publish</span></code>.</p>
+<p>When doing this, you will most likely first want to cleanup metadata and
+templates on the instance you’re publishing using the <code class="docutils literal notranslate"><span class="pre">lxc</span> <span class="pre">config</span> <span class="pre">metadata</span></code>
+and <code class="docutils literal notranslate"><span class="pre">lxc</span> <span class="pre">config</span> <span class="pre">template</span></code> commands. You will also want to remove any
+instance-specific state like host SSH keys, <code class="docutils literal notranslate"><span class="pre">dbus/systemd</span> <span class="pre">machine-id</span></code>, …</p>
+<p>The publishing process can take quite a while as a tarball must be
+generated from the instance and then be compressed. As this can be
+particularly I/O and CPU intensive, publish operations are serialized by LXD.</p>
+</section>
+</section>
+<section id="caching">
+<h2>Caching<a class="headerlink" href="#caching" title="Permalink to this heading">#</a></h2>
+<p>When spawning an instance from a remote image, the remote image is
+downloaded into the local image store with the cached bit set. The image
+will be kept locally as a private image until either it’s been unused
+(no new instance spawned) for the number of days set in
+<code class="docutils literal notranslate"><span class="pre">images.remote_cache_expiry</span></code> or until the image’s expiry is reached
+whichever comes first.</p>
+<p>LXD keeps track of image usage by updating the <code class="docutils literal notranslate"><span class="pre">last_used_at</span></code> image
+property every time a new instance is spawned from the image.</p>
+</section>
+<section id="auto-update">
+<h2>Auto-update<a class="headerlink" href="#auto-update" title="Permalink to this heading">#</a></h2>
+<p>LXD can keep images up to date. By default, any image which comes from a
+remote server and was requested through an alias will be automatically
+updated by LXD. This can be changed with <code class="docutils literal notranslate"><span class="pre">images.auto_update_cached</span></code>.</p>
+<p>On startup and then every 6 hours (unless <code class="docutils literal notranslate"><span class="pre">images.auto_update_interval</span></code>
+is set), the LXD daemon will go look for more recent version of all the
+images in the store which are marked as auto-update and have a recorded
+source server.</p>
+<p>When a new image is found, it is downloaded into the image store, the
+aliases pointing to the old image are moved to the new one and the old
+image is removed from the store.</p>
+<p>The user can also request a particular image be kept up to date when
+manually copying an image from a remote server.</p>
+<p>If a new upstream image update is published and the local LXD has the
+previous image in its cache when the user requests a new instance to be
+created from it, LXD will use the previous version of the image rather
+than delay the instance creation.</p>
+<p>This behavior only happens if the current image is scheduled to be
+auto-updated and can be disabled by setting <code class="docutils literal notranslate"><span class="pre">images.auto_update_interval</span></code> to 0.</p>
+</section>
+<section id="profiles">
+<h2>Profiles<a class="headerlink" href="#profiles" title="Permalink to this heading">#</a></h2>
+<p>A list of profiles can be associated with an image using the <code class="docutils literal notranslate"><span class="pre">lxc</span> <span class="pre">image</span> <span class="pre">edit</span></code>
+command. After associating profiles with an image, an instance launched
+using the image will have the profiles applied in order. If <code class="docutils literal notranslate"><span class="pre">nil</span></code> is passed
+as the list of profiles, only the <code class="docutils literal notranslate"><span class="pre">default</span></code> profile will be associated with
+the image. If an empty list is passed, then no profile will be associated
+with the image, not even the <code class="docutils literal notranslate"><span class="pre">default</span></code> profile. An image’s associated
+profiles can be overridden when launching an instance by using the
+<code class="docutils literal notranslate"><span class="pre">--profile</span></code> and the <code class="docutils literal notranslate"><span class="pre">--no-profiles</span></code> flags to <code class="docutils literal notranslate"><span class="pre">lxc</span> <span class="pre">launch</span></code>.</p>
+</section>
+<section id="special-image-properties">
+<h2>Special image properties<a class="headerlink" href="#special-image-properties" title="Permalink to this heading">#</a></h2>
+<p>Image properties beginning with the prefix <em><strong>requirements</strong></em> (e.g. <code class="docutils literal notranslate"><span class="pre">requirements.XYZ</span></code>)
+are used by LXD to determine the compatibility of the host system and the
+instance to be created by said image. In the event that these are incompatible,
+LXD will not start the instance.</p>
+<p>At the moment, the following requirements are supported:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Key</p></th>
+<th class="head text-left"><p>Type</p></th>
+<th class="head text-left"><p>Default</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">requirements.secureboot</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>If set to <code class="docutils literal notranslate"><span class="pre">false</span></code>, indicates the image will not boot under secure boot</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">requirements.cgroup</span></code></p></td>
+<td class="text-left"><p>string</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>If set to <code class="docutils literal notranslate"><span class="pre">v1</span></code>, indicates the image requires the host to run <code class="docutils literal notranslate"><span class="pre">CGroupV1</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="image-format">
+<h2>Image format<a class="headerlink" href="#image-format" title="Permalink to this heading">#</a></h2>
+<p>LXD currently supports two LXD-specific image formats.</p>
+<p>The first is a unified tarball, where a single tarball
+contains both the instance root and the needed metadata.</p>
+<p>The second is a split model, using two files instead, one containing
+the root, the other containing the metadata.</p>
+<p>The former is what’s produced by LXD itself and what people should be
+using for LXD-specific images.</p>
+<p>The latter is designed to allow for easy image building from existing
+non-LXD rootfs tarballs already available today.</p>
+<section id="unified-tarball">
+<h3>Unified tarball<a class="headerlink" href="#unified-tarball" title="Permalink to this heading">#</a></h3>
+<p>Tarball, can be compressed and contains:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rootfs/</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">metadata.yaml</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">templates/</span></code> (optional)</p></li>
+</ul>
+<p>In this mode, the image identifier is the SHA-256 of the tarball.</p>
+</section>
+<section id="split-tarballs">
+<h3>Split tarballs<a class="headerlink" href="#split-tarballs" title="Permalink to this heading">#</a></h3>
+<p>Two (possibly compressed) tarballs. One for metadata, one for the rootfs.</p>
+<p><code class="docutils literal notranslate"><span class="pre">metadata.tar</span></code> contains:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">metadata.yaml</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">templates/</span></code> (optional)</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">rootfs.tar</span></code> contains a Linux root file system at its root.</p>
+<p>In this mode the image identifier is the SHA-256 of the concatenation of
+the metadata and rootfs tarball (in that order).</p>
+</section>
+<section id="supported-compression">
+<h3>Supported compression<a class="headerlink" href="#supported-compression" title="Permalink to this heading">#</a></h3>
+<p>LXD supports a wide variety of compression algorithms for tarballs
+though for compatibility purposes, <code class="docutils literal notranslate"><span class="pre">gzip</span></code> or <code class="docutils literal notranslate"><span class="pre">xz</span></code> should be preferred.</p>
+<p>For split images, the rootfs file can also be SquashFS-formatted in the
+container case. For virtual machines, the <code class="docutils literal notranslate"><span class="pre">rootfs.img</span></code> file is always
+<code class="docutils literal notranslate"><span class="pre">qcow2</span></code> and can optionally be compressed using <code class="docutils literal notranslate"><span class="pre">qcow2</span></code>’s native compression.</p>
+</section>
+<section id="content">
+<h3>Content<a class="headerlink" href="#content" title="Permalink to this heading">#</a></h3>
+<p>For containers, the rootfs directory (or tarball) contains a full file system tree of what will become the <code class="docutils literal notranslate"><span class="pre">/</span></code>.
+For VMs, this is instead a <code class="docutils literal notranslate"><span class="pre">rootfs.img</span></code> file which becomes the main disk device.</p>
+<p>The templates directory contains Pongo2-formatted templates of files inside the instance.</p>
+<p><code class="docutils literal notranslate"><span class="pre">metadata.yaml</span></code> contains information relevant to running the image under
+LXD, at the moment, this contains:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">architecture</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x86_64</span>
+<span class="nt">creation_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1424284563</span>
+<span class="nt">properties</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ubuntu 22.04 LTS Intel 64bit</span>
+<span class="w">  </span><span class="nt">os</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ubuntu</span>
+<span class="w">  </span><span class="nt">release</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jammy 22.04</span>
+<span class="nt">templates</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">/etc/hosts</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">when</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">create</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rename</span>
+<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hosts.tpl</span>
+<span class="w">    </span><span class="nt">properties</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">foo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bar</span>
+<span class="w">  </span><span class="nt">/etc/hostname</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">when</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">start</span>
+<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hostname.tpl</span>
+<span class="w">  </span><span class="nt">/etc/network/interfaces</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">when</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">create</span>
+<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">interfaces.tpl</span>
+<span class="w">    </span><span class="nt">create_only</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">architecture</span></code> and <code class="docutils literal notranslate"><span class="pre">creation_date</span></code> fields are mandatory, the properties
+are just a set of default properties for the image. The <code class="docutils literal notranslate"><span class="pre">os</span></code>, <code class="docutils literal notranslate"><span class="pre">release</span></code>,
+<code class="docutils literal notranslate"><span class="pre">name</span></code> and <code class="docutils literal notranslate"><span class="pre">description</span></code> fields while not mandatory in any way, should be
+pretty common.</p>
+<p>For templates, the <code class="docutils literal notranslate"><span class="pre">when</span></code> key can be one or more of:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">create</span></code> (run at the time a new instance is created from the image)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">copy</span></code> (run when an instance is created from an existing one)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start</span></code> (run every time the instance is started)</p></li>
+</ul>
+<p>The templates will always receive the following context:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">trigger</span></code>: name of the event which triggered the template (string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">path</span></code>: path of the file that uses the template (string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">container</span></code>: key/value map of instance properties (name, architecture, privileged and ephemeral) (map[string]string) (deprecated in favor of <code class="docutils literal notranslate"><span class="pre">instance</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">instance</span></code>: key/value map of instance properties (name, architecture, privileged and ephemeral) (map[string]string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">config</span></code>: key/value map of the instance’s configuration (map[string]string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">devices</span></code>: key/value map of the devices assigned to this instance (map[string]map[string]string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">properties</span></code>: key/value map of the template properties specified in <code class="docutils literal notranslate"><span class="pre">metadata.yaml</span></code> (map[string]string)</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">create_only</span></code> key can be set to have LXD only only create missing files but not overwrite an existing file.</p>
+<p>As a general rule, you should never template a file which is owned by a
+package or is otherwise expected to be overwritten by normal operation
+of the instance.</p>
+<p>For convenience the following functions are exported to Pongo2 templates:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">config_get(&quot;user.foo&quot;,</span> <span class="pre">&quot;bar&quot;)</span></code> =&gt; Returns the value of <code class="docutils literal notranslate"><span class="pre">user.foo</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;bar&quot;</span></code> if unset.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+   
+
+<div class="related-pages">
+  <a class="next-page" href="../storage/">
+      <div class="page-info">
+        <div class="context">
+          <span>Next</span>
+        </div>
+        <div class="title">Storage</div>
+      </div>
+      <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+    </a>
+  <a class="prev-page" href="../cloud-init/">
+      <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+      <div class="page-info">
+        <div class="context">
+          <span>Previous</span>
+        </div>
+        
+        <div class="title">cloud-init</div>
+        
+      </div>
+    </a>
+</div>
+<div class="bottom-of-page">
+  <div class="left-details">
+    <div class="copyright">
+        Copyright &#169; 2014-2023 LXD contributors
+    </div>
+
+    <div class="last-updated">
+      Last updated on Jan 16, 2023</div>
+  </div>
+  <div class="right-details">
+
+    
+    <div class="show-source">
+      <a class="muted-link" href="../_sources/image-handling.md.txt"
+         rel="nofollow">Show source</a>
+    </div>
+    
+    <div class="edit-github">
+      <a class="muted-link" href="https://github.com/lxc/lxd/edit/master/doc/image-handling.md">Edit on GitHub</a>
+    </div>
+    
+
+    </div>
+  </div>
+</div>
+
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+<div class="toc-sticky toc-scroll">
+   
+    <div class="toc-title-container">
+      <span class="toc-title">
+       Contents
+      </span>
+    </div>
+    <div class="toc-tree-container">
+      <div class="toc-tree">
+        <ul>
+<li><a class="reference internal" href="#">Image handling</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#sources">Sources</a><ul>
+<li><a class="reference internal" href="#remote-image-server-lxd-or-simplestreams">Remote image server (LXD or simplestreams)</a></li>
+<li><a class="reference internal" href="#direct-pushing-of-the-image-files">Direct pushing of the image files</a></li>
+<li><a class="reference internal" href="#file-on-a-remote-web-server">File on a remote web server</a></li>
+<li><a class="reference internal" href="#publishing-an-instance-or-snapshot-as-a-new-image">Publishing an instance or snapshot as a new image</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#caching">Caching</a></li>
+<li><a class="reference internal" href="#auto-update">Auto-update</a></li>
+<li><a class="reference internal" href="#profiles">Profiles</a></li>
+<li><a class="reference internal" href="#special-image-properties">Special image properties</a></li>
+<li><a class="reference internal" href="#image-format">Image format</a><ul>
+<li><a class="reference internal" href="#unified-tarball">Unified tarball</a></li>
+<li><a class="reference internal" href="#split-tarballs">Split tarballs</a></li>
+<li><a class="reference internal" href="#supported-compression">Supported compression</a></li>
+<li><a class="reference internal" href="#content">Content</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      </div>
+    </div>
+   
+    
+    <div class="relatedlinks-title-container">
+      <span class="relatedlinks-title">
+       Related links
+      </span>
+    </div>
+    <div class="relatedlinks-container">
+      <div class="relatedlinks">
+        
+          <ul><li><a href="https://discuss.linuxcontainers.org/t/9310" target="_blank">Best practice create/share simplestreams from lxd image export</a></li></ul>
+        
+        
+      </div>
+    </div>
+    
+  </div>
+
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    <script src="../_static/header-nav.js"></script>
+    <script src="../_static/version-switcher.js"></script>
+    </body>
+</html>
